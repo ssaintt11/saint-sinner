@@ -1,0 +1,382 @@
+/* ========== TEMEL AYARLAR ========== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000 url('ravenn.png') center/cover no-repeat fixed;
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 24px;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ========== KALIN SABİT HEADER ========== */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0,0,0,.95);
+    border-bottom: 3px solid #8B0000;
+    padding: 20px 0;
+    z-index: 1000;
+    height: 140px;
+}
+
+/* LOGO ORTA ÜSTTE */
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Creepster', cursive;
+    font-size: 72px;
+    color: #8B0000;
+    text-shadow: 0 0 30px #8B0000;
+    white-space: nowrap;
+}
+
+/* ÜST BUTONLAR (Login/Register) */
+.top-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.top-buttons button {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 15px;
+    font-size: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.top-buttons button:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+/* ALT BUTONLAR (Main/Counter/Blog/Forgive) */
+.main-buttons {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.main-buttons button {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 20px;
+    font-size: 24px;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.main-buttons button:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+    transform: translateY(-2px);
+}
+
+/* FORGIVE BUTONU KIRMIZI */
+.forgive-btn {
+    border-color: #8B0000 !important;
+    color: #8B0000 !important;
+}
+
+.forgive-btn:hover {
+    background: rgba(139, 0, 0, 0.1) !important;
+}
+
+/* ========== POPUP ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.95);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    background: #0a0a0a;
+    border: 2px solid #8B0000;
+    margin: 10% auto;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h2 {
+    font-size: 36px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-family: 'Creepster', cursive;
+    color: #8B0000;
+}
+
+/* Kapatma butonu */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #666;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #8B0000;
+}
+
+/* ========== TÜM BUTONLAR AYNI STİLDE ========== */
+.glitch-btn, .fake-btn {
+    width: 100%;
+    background: #000;
+    color: #8B0000;
+    border: 2px solid #8B0000;
+    padding: 15px;
+    margin: 10px 0;
+    font-family: 'Creepster', cursive;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.glitch-btn:hover {
+    animation: glitch 0.35s infinite;
+    background: #8B0000;
+    color: #000;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}
+
+/* ========== FAKE BUTONLAR (İŞLEVSİZ) ========== */
+.fake-btn {
+    cursor: default;
+    text-align: center;
+    opacity: 0.6;
+}
+
+.fake-btn:hover {
+    animation: none;
+    background: #000;
+    color: #8B0000;
+}
+
+/* ========== SCANLINE EFEKTİ ========== */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.15), rgba(0,0,0,.15) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* ========== CRT EFEKTİ ========== */
+.crt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 998;
+    pointer-events: none;
+    background-size: 100% 4px, 6px 100%;
+    animation: crt-flicker 0.15s infinite;
+}
+
+@keyframes crt-flicker {
+    0% { opacity: 0.1; }
+    50% { opacity: 0.05; }
+    100% { opacity: 0.1; }
+}
+
+/* ========== INPUT ALANLARI ========== */
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 20px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #8B0000;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #666;
+}
+
+/* ========== ANA İÇERİK ALANI ========== */
+.content-grid {
+    margin-top: 160px;
+    min-height: calc(100vh - 160px);
+    padding: 20px;
+}
+
+/* ========== RESPONSIVE TASARIM ========== */
+@media (max-width: 1200px) {
+    .logo {
+        font-size: 56px;
+    }
+    
+    .main-buttons button {
+        font-size: 20px;
+        padding: 6px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fixed-header {
+        height: auto;
+        padding: 15px 0;
+    }
+    
+    .logo {
+        font-size: 36px;
+        top: 10px;
+    }
+    
+    .top-buttons {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .top-buttons button {
+        font-size: 16px;
+        padding: 5px 10px;
+    }
+    
+    .main-buttons {
+        top: 60px;
+        gap: 8px;
+    }
+    
+    .main-buttons button {
+        font-size: 16px;
+        padding: 5px 12px;
+    }
+    
+    .content-grid {
+        margin-top: 120px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+        margin: 20% auto;
+    }
+    
+    .modal-content h2 {
+        font-size: 28px;
+    }
+    
+    .glitch-btn, .fake-btn {
+        font-size: 20px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 28px;
+    }
+    
+    .main-buttons {
+        top: 55px;
+        gap: 5px;
+    }
+    
+    .main-buttons button {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+    
+    .content-grid {
+        margin-top: 110px;
+    }
+}
+
+/* ========== EKSTRA STİLLER ========== */
+a {
+    color: #8B0000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ff0000;
+}
+
+/* Scrollbar stilleri */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8B0000;
+}
+
+/* Seçim rengi */
+::selection {
+    background: #8B0000;
+    color: #000;
+}
