@@ -10,9 +10,10 @@
 
 body {
     margin: 0;
-    background: var(--siyah);
+    background: var(--siyah) url('ravenn.png') center/cover no-repeat fixed;
     color: var(--beyaz);
     font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
 }
 
 /* KALIN HEADER (YAZILAR ÜST ÜSTE BİNMEZ) */
@@ -22,7 +23,7 @@ body {
     width: 100%;
     background: var(--koyu-siyah);
     border-bottom: 3px solid var(--koyu-kirmizi);
-    padding: 60px 0; /* KALIN ALAN */
+    padding: 60px 0;
     z-index: 1000;
 }
 

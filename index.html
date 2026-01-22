@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap " rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     <header class="fixed-header" style="padding:60px 0;">
@@ -13,46 +13,23 @@
         
         <!-- ÜST BUTONLAR -->
         <div class="top-buttons">
-            <button onclick="showLogin()" style="font-size:16px;">Login</button>
-            <button onclick="showRegister()" style="font-size:16px;">Register</button>
+            <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
+            <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
+            <button class="backrooms-btn" onclick="location.href='profile.html'">My Profile</button>
         </div>
         
-        <!-- ALT BUTONLAR (backrooms.vip tarzı) -->
+        <!-- ALT BUTONLAR -->
         <div class="main-buttons" style="top:110px;">
             <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
             <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
             <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
-            <button class="backrooms-btn" onclick="openForgive()">Forgive My Sins</button>
+            <button class="backrooms-btn" onclick="location.href='forgive.html'">Forgive My Sins</button>
         </div>
     </header>
 
-    <!-- İÇERİK -->
     <main>
         <h2 style="text-align:center; margin-top:200px; font-size:32px; color:#fff; text-shadow:0 0 5px #8B0000;">Posts will appear here</h2>
     </main>
-
-    <!-- POPUP'LAR -->
-    <div id="forgive-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeForgive()">&times;</span>
-            <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000;">Seek Redemption</h2>
-            <button class="glitch-btn" onclick="location.href='apologize.html'">Click to Apologize</button>
-            <button class="fake-btn">Click to be Saved</button>
-            <button class="fake-btn">Click to Forgive</button>
-            <button class="fake-btn">Click to Forget</button>
-            <button class="fake-btn">Click to be Pure</button>
-        </div>
-    </div>
-
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLogin()">&times;</span>
-            <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000;">Enter the Void</h2>
-            <input type="text" id="login-nickname" placeholder="Church Nickname">
-            <input type="password" id="login-password" placeholder="Password">
-            <button class="glitch-btn" onclick="login()">Descend</button>
-        </div>
-    </div>
 
     <script src="auth.js"></script>
 </body>
