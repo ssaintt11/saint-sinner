@@ -6,115 +6,58 @@
     <title>Countdown - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        /* ===== SABİT HEADER ===== */
-        .fixed-header {
-            position: fixed !important;
-            top: 0 !important;
-            width: 100% !important;
-            background: rgba(0,0,0,.95) !important;
-            border-bottom: 3px solid #8B0000 !important;
-            padding: 20px 0 !important;
-            z-index: 1000 !important;
-        }
-        
-        .fixed-header .logo {
-            font-size: 54px !important; /* 1.5X */
-        }
-
-        /* ===== YAZI 1.5X BÜYÜK (108px) ===== */
-        .countdown-text {
-            font-size: 108px !important; /* 1.5X */
-            color: #fff !important;
-            text-shadow: 0 0 45px #8B0000 !important;
-        }
-
-        /* ===== ARKAPLAN BAŞLANGIÇTA KAPALI ===== */
-        .animated-background {
-            opacity: 0 !important;
-        }
-
-        /* ===== FLICKER ===== */
-        @keyframes broken-flicker {
-            0%, 100% { opacity: 1 !important; }
-            50% { opacity: 0.2 !important; }
-        }
-
-        .text-flicker {
-            animation: broken-flicker 0.5s 2 !important;
-        }
-
-        .bg-flicker {
-            animation: broken-flicker 0.5s 2 !important;
-        }
-        
-        /* ===== SİYAH ARKAPLAN ===== */
-        body {
-            background: #000 !important;
-        }
-    </style>
 </head>
 <body>
-    <!-- SABİT HEADER -->
+    <!-- HEADER -->
     <header class="fixed-header">
-        <div class="logo">Saint 𖤐 sinneR</div>
-        <div class="main-buttons" style="position:absolute; top: 80px; right: 20px;">
-            <button onclick="location.href='index.html'">Main Page</button>
-        </div>
+        <div class="logo" style="font-size: 48px;">Saint 𖤐 sinneR</div>
+        <button onclick="location.href='index.html'" style="position:absolute; top:20px; right:20px;">Main Page</button>
     </header>
 
     <!-- YAZI -->
-    <div class="countdown-container">
-        <div class="countdown-text" id="countdown-text">BACKROOMS IS OUT!</div>
+    <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center;">
+        <div id="countdown-text" style="font-size:108px; font-family:'Creepster'; color:#fff; text-shadow:0 0 45px #8B0000;">BACKROOMS IS OUT!</div>
     </div>
 
     <!-- ARKAPLAN -->
-    <div class="animated-background" id="animated-background"></div>
+    <div id="animated-background" style="position:fixed; inset:0; background:#000 url('backroooms.png') center/cover no-repeat; opacity:0; z-index:-1;"></div>
 
     <!-- ZAMANLAYICI -->
     <script>
-        const textElement = document.getElementById('countdown-text');
-        const bgElement = document.getElementById('animated-background');
+        const text = document.getElementById('countdown-text');
+        const bg = document.getElementById('animated-background');
 
-        function startCountdownEffect() {
-            // 3500ms: Yazıya efect (3 sn sürer)
+        function effect() {
             setTimeout(() => {
-                textElement.classList.add('text-flicker');
-                
+                text.style.animation = 'flicker .5s 2';
                 setTimeout(() => {
-                    textElement.classList.remove('text-flicker');
-                    
-                    // 5000ms: Arkaplan açılır + efect (1 sn sürer)
+                    text.style.animation = '';
+                    bg.style.opacity = '1';
+                    bg.style.animation = 'flicker .5s 2';
                     setTimeout(() => {
-                        bgElement.style.opacity = '1';
-                        bgElement.classList.add('bg-flicker');
-                        
+                        bg.style.animation = '';
                         setTimeout(() => {
-                            bgElement.classList.remove('bg-flicker');
-                            
-                            // 6000ms: İkisi beraber (1 sn sürer)
+                            text.style.animation = 'flicker .5s 2';
+                            bg.style.animation = 'flicker .5s 2';
                             setTimeout(() => {
-                                textElement.classList.add('text-flicker');
-                                bgElement.classList.add('bg-flicker');
-                                
-                                // 6500ms: Her şey düzelir
-                                setTimeout(() => {
-                                    textElement.classList.remove('text-flicker');
-                                    bgElement.classList.remove('bg-flicker');
-                                    bgElement.style.opacity = '0';
-                                }, 1000);
-                            }, 500);
+                                text.style.animation = '';
+                                bg.style.animation = '';
+                                bg.style.opacity = '0';
+                            }, 1000);
                         }, 500);
                     }, 500);
                 }, 3000);
             }, 3500);
         }
 
-        window.addEventListener('load', () => {
-            setTimeout(startCountdownEffect, 1000);
-        });
-
-        setInterval(startCountdownEffect, 8500);
+        window.onload = () => setTimeout(effect, 1000);
+        setInterval(effect, 8500);
     </script>
+
+    <style>
+        @keyframes flicker {
+            0%,100%{opacity:1} 50%{opacity:.2}
+        }
+    </style>
 </body>
 </html>
