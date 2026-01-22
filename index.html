@@ -9,38 +9,36 @@
 </head>
 <body>
     <div class="crt"></div>
+    
     <header class="fixed-header">
         <div class="logo">Saint 𖤐 sinneR</div>
         <div class="header-right">
-            <div id="auth-buttons">
-                <button onclick="showLogin()">Login</button>
-                <button onclick="showRegister()">Register</button>
-            </div>
-            <div id="profile-section" style="display:none;">
-                <a href="profile.html">My Profile</a>
-                <button onclick="logout()">Logout</button>
-            </div>
+            <button onclick="location.href='countdown.html'">Countdown</button>
+            <button onclick="showLogin()">Login</button>
+            <button onclick="showRegister()">Register</button>
             <button class="forgive-btn" onclick="openForgive()">Forgive My Sins</button>
         </div>
     </header>
 
-    <!-- COUNTDOWN OVERLAY -->
-    <div id="countdown-overlay" class="countdown-overlay">
-        <div class="countdown-text">BACKROOMS IS OUT!</div>
-    </div>
+    <!-- İÇERİK ALANI -->
+    <main class="content-grid" id="content-grid">
+        <h2 style="text-align:center; margin-top:100px;">Posts will appear here</h2>
+    </main>
 
+    <!-- FORGIVE POPUP -->
     <div id="forgive-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeForgive()">&times;</span>
             <h2>Seek Redemption</h2>
             <button class="glitch-btn" onclick="location.href='apologize.html'">Click to Apologize</button>
-            <p class="fake-link">Click to be Saved</p>
-            <p class="fake-link">Click to Forgive</p>
-            <p class="fake-link">Click to Forget</p>
-            <p class="fake-link">Click to be Pure</p>
+            <button class="fake-btn">Click to be Saved</button>
+            <button class="fake-btn">Click to Forgive</button>
+            <button class="fake-btn">Click to Forget</button>
+            <button class="fake-btn">Click to be Pure</button>
         </div>
     </div>
 
+    <!-- LOGIN POPUP -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogin()">&times;</span>
@@ -51,31 +49,17 @@
         </div>
     </div>
 
+    <!-- REGISTER POPUP -->
     <div id="register-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeRegister()">&times;</span>
             <h2>Join the Congregation</h2>
             <input type="text" id="reg-nickname" placeholder="Church Nickname">
             <input type="password" id="reg-password" placeholder="Password">
-            <div class="role-buttons">
-                <button onclick="selectRole('sinner')">I am a Sinner</button>
-                <button onclick="selectRole('pious')">I am Pious</button>
-            </div>
-            <p id="selected-role" style="color:#8B0000; margin:10px 0;"></p>
             <button onclick="register()">Submit</button>
         </div>
     </div>
 
-    <main class="content-grid" id="content-grid">
-        <!-- İçerikler buraya gelecek -->
-    </main>
-
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    <script src="config.js"></script>
     <script src="auth.js"></script>
-    <script src="gallery.js"></script>
-    <script src="countdown.js"></script>
 </body>
 </html>

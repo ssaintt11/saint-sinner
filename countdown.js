@@ -1,41 +1,48 @@
-const overlay = document.getElementById('countdown-overlay');
-const text = overlay.querySelector('.countdown-text');
-
-// EKRAN KARARTMA EFEKTİ
-function blackout() {
-    document.body.style.background = '#000';
-    overlay.style.opacity = '0';
-    text.style.opacity = '0';
-}
-
-// IŞIK YANMA EFEKTİ
-function lightOn() {
-    document.body.style.background = 'url(ravenn.png) center/cover no-repeat fixed';
-    overlay.style.opacity = '1';
-    text.style.opacity = '1';
-}
-
-// LOOP SENARYOSU
-function countdownLoop() {
-    // 1. Yazı yanıp sön (2 kez)
-    text.style.animation = 'flicker .3s 2';
-    
-    setTimeout(() => {
-        // 2. Işık açılır
-        lightOn();
-        text.style.animation = 'flicker 1.2s infinite';
-        
-        // 3. 3 saniye sonra tekrar kapanır
-        setTimeout(() => {
-            blackout();
-            
-            // 4. 2 saniye bekleyip loop başa döner
-            setTimeout(countdownLoop, 2000);
-        }, 3000);
-    }, 600);
-}
-
-// Sayfa yüklendiğinde başlat
-window.addEventListener('load', () => {
-    setTimeout(countdownLoop, 1000);
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown - Saint 𖤐 sinneR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #000 url('backroooms.png') center/cover no-repeat;
+            animation: blackout 4s infinite;
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        @keyframes blackout {
+            0%, 45%, 55%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .countdown-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        .countdown-text {
+            font-family: 'Creepster', cursive;
+            font-size: 72px;
+            color: #fff;
+            text-shadow: 0 0 30px #8B0000, 0 0 50px #8B0000;
+            animation: flicker 0.8s infinite;
+        }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <div class="countdown-text">BACKROOMS IS OUT!</div>
+    </div>
+</body>
+</html>
