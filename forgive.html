@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgive - Saint 𖤐 sinneR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
+    <header class="fixed-header" style="padding:60px 0;">
+        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <div class="top-buttons">
+            <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
+            <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
+        </div>
+        <div class="main-buttons" style="top:110px;">
+            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
+        </div>
+    </header>
+    
+    <div class="modal-content" style="margin:10% auto; max-width:600px;">
+        <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000;">CONFESS YOUR SINS</h2>
+        <input type="text" id="nickname" placeholder="Your Church Nickname" style="font-size:24px; width:100%; padding:10px; margin:10px 0; background:#1A1A1A; border:1px solid #8B0000; color:#fff;">
+        <textarea id="reason" placeholder="Why do you seek forgiveness?" rows="5" style="font-size:24px; width:100%; padding:10px; margin:10px 0; background:#1A1A1A; border:1px solid #8B0000; color:#fff;"></textarea>
+        
+        <h3 style="font-size:36px; color:#fff; text-shadow:0 0 5px #8B0000;">Are you truly sorry?</h3>
+        <div style="display:flex; gap:20px; justify-content:center; margin:30px 0;">
+            <button class="glitch-btn" style="font-size:32px;" onclick="alert('Your sin has been noted...')">YES</button>
+            <button class="glitch-btn" style="font-size:32px;" onclick="alert('There is no escape...')">NO</button>
+        </div>
+        
+        <button class="glitch-btn" style="font-size:32px;" onclick="alert('God has heard you... maybe')">God Forgive Me</button>
+    </div>
+</body>
+</html>

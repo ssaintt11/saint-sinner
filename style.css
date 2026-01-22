@@ -10,13 +10,12 @@
 
 body {
     margin: 0;
-    background: var(--siyah) url('ravenn.png') center/cover no-repeat fixed;
+    background: var(--siyah);
     color: var(--beyaz);
     font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
 }
 
-/* KALIN HEADER (YAZILAR ÜST ÜSTE BİNMEZ) */
+/* KALIN HEADER */
 .fixed-header {
     position: fixed;
     top: 0;
