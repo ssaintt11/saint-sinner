@@ -5,39 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap " rel="stylesheet">
 </head>
-<body>
-    <div class="crt"></div>
-    
-    <header class="fixed-header">
-        <div class="logo">Saint 𖤐 sinneR</div>
+<body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
+    <header class="fixed-header" style="padding:60px 0;">
+        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
         
-        <!-- ÜST BUTONLAR (Register/Login) -->
+        <!-- ÜST BUTONLAR -->
         <div class="top-buttons">
-            <button onclick="showLogin()" style="font-size: 24px;">Login</button>
-            <button onclick="showRegister()" style="font-size: 24px;">Register</button>
+            <button onclick="showLogin()" style="font-size:16px;">Login</button>
+            <button onclick="showRegister()" style="font-size:16px;">Register</button>
         </div>
         
-        <!-- ALT BUTONLAR (Main/Counter/Blog/Forgive) -->
-        <div class="main-buttons">
-            <button onclick="location.href='index.html'" style="font-size: 32px;">Main Page</button>
-            <button onclick="location.href='countdown.html'" style="font-size: 32px;">Countdown</button>
-            <button onclick="alert('Blog coming soon')" style="font-size: 32px;">Blog</button>
-            <button class="forgive-btn" onclick="openForgive()" style="font-size: 32px;">Forgive My Sins</button>
+        <!-- ALT BUTONLAR (backrooms.vip tarzı) -->
+        <div class="main-buttons" style="top:110px;">
+            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
+            <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
+            <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
+            <button class="backrooms-btn" onclick="openForgive()">Forgive My Sins</button>
         </div>
     </header>
 
-    <!-- İÇERİK ALANI -->
-    <main class="content-grid" id="content-grid">
-        <h2 style="text-align:center; margin-top:150px; color:#fff; font-family:'Share Tech Mono', monospace; font-size:32px;">Posts will appear here</h2>
+    <!-- İÇERİK -->
+    <main>
+        <h2 style="text-align:center; margin-top:200px; font-size:32px; color:#fff; text-shadow:0 0 5px #8B0000;">Posts will appear here</h2>
     </main>
 
-    <!-- FORGIVE POPUP -->
+    <!-- POPUP'LAR -->
     <div id="forgive-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeForgive()">&times;</span>
-            <h2 style="font-size:48px;">Seek Redemption</h2>
+            <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000;">Seek Redemption</h2>
             <button class="glitch-btn" onclick="location.href='apologize.html'">Click to Apologize</button>
             <button class="fake-btn">Click to be Saved</button>
             <button class="fake-btn">Click to Forgive</button>
@@ -46,25 +44,13 @@
         </div>
     </div>
 
-    <!-- LOGIN POPUP -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogin()">&times;</span>
-            <h2 style="font-size:48px;">Enter the Void</h2>
+            <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000;">Enter the Void</h2>
             <input type="text" id="login-nickname" placeholder="Church Nickname">
             <input type="password" id="login-password" placeholder="Password">
             <button class="glitch-btn" onclick="login()">Descend</button>
-        </div>
-    </div>
-
-    <!-- REGISTER POPUP -->
-    <div id="register-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeRegister()">&times;</span>
-            <h2 style="font-size:48px;">Join the Congregation</h2>
-            <input type="text" id="reg-nickname" placeholder="Church Nickname">
-            <input type="password" id="reg-password" placeholder="Password">
-            <button class="glitch-btn" onclick="register()">Submit</button>
         </div>
     </div>
 

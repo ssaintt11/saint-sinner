@@ -6,117 +6,49 @@
     <title>Countdown - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        /* ===== SABİT HEADER ===== */
-        .fixed-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0,0,0,.95);
-            border-bottom: 3px solid #8B0000;
-            padding: 20px 0;
-            z-index: 1000;
-        }
-
-        /* ===== YAZI SÜREKLİ GÖRÜNÜR ===== */
-        .countdown-container {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-        }
-
-        .countdown-text {
-            font-family: 'Creepster', cursive;
-            font-size: 144px;
-            color: #fff;
-            text-shadow: 0 0 60px #8B0000;
-            opacity: 1;
-        }
-
-        /* ===== ARKAPLAN BAŞLANGIÇTA GÖRÜNMEZ ===== */
-        .animated-background {
-            position: fixed;
-            inset: 0;
-            background: #000 url('backroooms.png') center/cover no-repeat;
-            opacity: 0;
-            z-index: 1;
-        }
-
-        /* ===== FLICKER ANİMASYONU ===== */
-        @keyframes broken-flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-
-        .text-flicker {
-            animation: broken-flicker 0.5s 2;
-        }
-
-        .bg-flicker {
-            animation: broken-flicker 0.5s 2;
-        }
-        
-        /* ===== SİYAH ARKAPLAN (ravenn.png'yi SİLER) ===== */
-        body {
-            background: #000 !important;
-        }
-    </style>
 </head>
-<body>
+<body style="background:#000;">
     <!-- SABİT HEADER -->
-    <header class="fixed-header">
-        <div class="logo" style="font-size: 72px;">Saint 𖤐 sinneR</div>
-        <div class="top-buttons">
-            <button onclick="showLogin()" style="font-size: 24px;">Login</button>
-            <button onclick="showRegister()" style="font-size: 24px;">Register</button>
-        </div>
-        <div class="main-buttons" style="top: 80px;">
-            <button onclick="location.href='index.html'" style="font-size: 32px;">Main Page</button>
-        </div>
+    <header class="fixed-header" style="padding:60px 0;">
+        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <button onclick="location.href='index.html'" style="position:absolute; top:40px; right:20px;" class="backrooms-btn">Main Page</button>
     </header>
 
-    <!-- YAZI -->
-    <div class="countdown-container">
-        <div class="countdown-text" id="countdown-text">BACKROOMS IS OUT!</div>
+    <!-- YAZI (1.5X = 108px) -->
+    <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:10;">
+        <div id="countdown-text" style="font-family:'Creepster'; font-size:108px; color:#fff; text-shadow:0 0 45px #8B0000;">BACKROOMS IS OUT!</div>
     </div>
 
     <!-- ARKAPLAN -->
-    <div class="animated-background" id="animated-background"></div>
+    <div id="animated-bg" style="position:fixed; inset:0; background:url('backroooms.png') center/cover no-repeat; opacity:0; z-index:1;"></div>
 
     <!-- ZAMANLAYICI -->
     <script>
         const textElement = document.getElementById('countdown-text');
-        const bgElement = document.getElementById('animated-background');
+        const bgElement = document.getElementById('animated-bg');
 
-        function startCountdownEffect() {
-            // 3500ms: Yazıya efect (3 sn sürer)
+        function countdownEffect() {
             setTimeout(() => {
-                textElement.classList.add('text-flicker');
+                textElement.style.animation = 'flicker .5s 2';
                 
                 setTimeout(() => {
-                    textElement.classList.remove('text-flicker');
+                    textElement.style.animation = '';
                     
-                    // 5000ms: Arkaplan açılır + efect (1 sn sürer)
                     setTimeout(() => {
                         bgElement.style.opacity = '1';
-                        bgElement.classList.add('bg-flicker');
+                        bgElement.style.animation = 'flicker .5s 2';
                         
                         setTimeout(() => {
-                            bgElement.classList.remove('bg-flicker');
+                            bgElement.style.animation = '';
                             
-                            // 6000ms: İkisi beraber (1 sn sürer)
                             setTimeout(() => {
-                                textElement.classList.add('text-flicker');
-                                bgElement.classList.add('bg-flicker');
+                                textElement.style.animation = 'flicker .5s 2';
+                                bgElement.style.animation = 'flicker .5s 2';
                                 
-                                // 6500ms: Her şey düzelir
                                 setTimeout(() => {
-                                    textElement.classList.remove('text-flicker');
-                                    bgElement.classList.remove('bg-flicker');
-                                    bgElement.style.opacity = '0'; /* Arkaplan kapanır */
+                                    textElement.style.animation = '';
+                                    bgElement.style.animation = '';
+                                    bgElement.style.opacity = '0';
                                 }, 1000);
                             }, 500);
                         }, 500);
@@ -126,10 +58,16 @@
         }
 
         window.addEventListener('load', () => {
-            setTimeout(startCountdownEffect, 1000);
+            setTimeout(countdownEffect, 1000);
+            setInterval(countdownEffect, 8500);
         });
-
-        setInterval(startCountdownEffect, 8500);
     </script>
+
+    <style>
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+    </style>
 </body>
 </html>

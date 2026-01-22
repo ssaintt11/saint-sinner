@@ -14,7 +14,3 @@ function register() {
     alert('Register demo - Firebase kurulumuna geçilecek');
     closeRegister();
 }
-
-function logout() {
-    location.reload();
-}

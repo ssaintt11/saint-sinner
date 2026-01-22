@@ -1,125 +1,107 @@
-/* ========== TEMEL AYARLAR ========== */
-body {
-    margin: 0;
-    background: #000 url('ravenn.png') center/cover no-repeat fixed;
-    color: #fff;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 24px;
+/* backrooms.vip RENK PALETİ */
+:root {
+    --siyah: #000000;
+    --koyu-gri: #1A1A1A;
+    --koyu-kirmizi: #8B0000;
+    --kirmizi: #FF0000;
+    --beyaz: #FFFFFF;
+    --koyu-siyah: #0D0D0D;
 }
 
-/* ========== KALIN SABİT HEADER ========== */
+body {
+    margin: 0;
+    background: var(--siyah);
+    color: var(--beyaz);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* KALIN HEADER (YAZILAR ÜST ÜSTE BİNMEZ) */
 .fixed-header {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(0,0,0,.95);
-    border-bottom: 3px solid #8B0000;
-    padding: 20px 0;
+    background: var(--koyu-siyah);
+    border-bottom: 3px solid var(--koyu-kirmizi);
+    padding: 60px 0; /* KALIN ALAN */
     z-index: 1000;
 }
 
-/* LOGO ORTA ÜSTTE (2 KAT) */
 .logo {
     position: absolute;
-    top: 20px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Creepster', cursive;
-    font-size: 72px;
-    color: #8B0000;
-    text-shadow: 0 0 30px #8B0000;
+    font-size: 48px;
+    color: var(--koyu-kirmizi);
+    text-shadow: 0 0 10px var(--koyu-kirmizi);
 }
 
-/* ÜST BUTONLAR (Login/Register) */
+/* ÜST BUTONLAR */
 .top-buttons {
     position: absolute;
-    top: 20px;
+    top: 30px;
     right: 20px;
-    display: flex;
-    gap: 10px;
 }
 
 .top-buttons button {
-    background: transparent;
-    color: #fff;
-    border: 1px solid #444;
+    background: var(--koyu-gri);
+    color: var(--beyaz);
+    border: 1px solid var(--koyu-kirmizi);
     padding: 5px 10px;
-    font-size: 24px;
-    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
     cursor: pointer;
+    transition: .3s;
 }
 
-/* ALT BUTONLAR (Main/Counter/Blog/Forgive) */
+.top-buttons button:hover {
+    background: var(--koyu-siyah);
+    border-color: var(--kirmizi);
+}
+
+/* ALT BUTONLAR (backrooms.vip tarzı) */
 .main-buttons {
     position: absolute;
-    top: 80px;
+    top: 110px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 20px;
 }
 
-.main-buttons button {
-    background: transparent;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 8px 15px;
-    font-size: 32px;
+.backrooms-btn {
+    background: var(--koyu-gri);
+    color: var(--beyaz);
+    border: 1px solid var(--koyu-kirmizi);
+    padding: 12px 24px;
     font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
     cursor: pointer;
-    transition: .2s;
-}
-.main-buttons button:hover {
-    border-color: #8B0000;
-    color: #8B0000;
+    transition: .3s;
 }
 
-/* FORGIVE BUTONU KIRMIZI */
-.forgive-btn {
-    border-color: #8B0000 !important;
-    color: #8B0000 !important;
+.backrooms-btn:hover {
+    background: var(--koyu-siyah);
+    border-color: var(--kirmizi);
+    box-shadow: 0 0 10px var(--koyu-kirmizi);
 }
 
-/* ========== POPUP ========== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,.95);
-}
-
-.modal-content {
-    width: 400px;
-    padding: 30px;
-    background: #0a0a0a;
-    border: 2px solid #8B0000;
-    margin: 12% auto;
-}
-
-.modal-content h2 {
-    font-size: 48px;
-}
-
-/* ========== TÜM BUTONLAR AYNI STİLDE ========== */
-.glitch-btn, .fake-btn {
-    width: 100%;
-    background: #000;
-    color: #8B0000;
-    border: 2px solid #8B0000;
-    padding: 15px;
-    margin: 10px 0;
+/* KIRMIZI GLITCH BUTONLAR */
+.glitch-btn {
+    background: var(--koyu-kirmizi);
+    color: #000000;
+    border: 2px solid var(--koyu-kirmizi);
+    padding: 10px 20px;
     font-family: 'Creepster', cursive;
-    font-size: 32px;
+    font-size: 24px;
     cursor: pointer;
+    transition: .3s;
 }
-.glitch-btn:hover, .fake-btn:hover {
-    animation: glitch .35s infinite;
-    background: #8B0000;
-    color: #000;
+
+.glitch-btn:hover {
+    animation: glitch 0.35s infinite;
+    background: var(--kirmizi);
+    box-shadow: 0 0 15px var(--koyu-kirmizi);
 }
 
 @keyframes glitch {
@@ -130,30 +112,36 @@ body {
     80%{transform:translate(2px,-2px)}
 }
 
-/* ========== FAKE BUTONLAR (İŞLEVSİZ) ========== */
+/* FAKE BUTONLAR (kırmızı ama işlevsiz) */
 .fake-btn {
-    cursor: default;
-    text-align: center;
-}
-
-/* ========== SCANLINE ========== */
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
-    pointer-events: none;
-    z-index: 999;
-}
-
-/* ========== INPUT ALANLARI ========== */
-input, textarea {
-    width: 100%;
-    padding: 15px;
-    margin: 15px 0;
-    background: #1a1a1a;
-    border: 2px solid #333;
-    color: #fff;
-    font-family: 'Share Tech Mono', monospace;
+    background: var(--koyu-kirmizi);
+    color: #000000;
+    border: 2px solid var(--koyu-kirmizi);
+    padding: 10px 20px;
+    font-family: 'Creepster', cursive;
     font-size: 24px;
+    cursor: default;
+    opacity: 0.7;
+}
+
+.fake-btn:hover {
+    animation: glitch 0.35s infinite;
+}
+
+/* POPUP */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 2000;
+}
+
+.modal-content {
+    width: 300px;
+    padding: 20px;
+    margin: 10% auto;
+    background: var(--koyu-gri);
+    border: 2px solid var(--koyu-kirmizi);
 }
