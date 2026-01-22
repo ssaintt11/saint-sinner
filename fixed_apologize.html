@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confess - Saint 𖤐 sinneR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Sadece apologize sayfasına özel stiller */
+        .confess-container {
+            margin: 8% auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .confess-container h2 {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .confess-container h3 {
+            font-size: 36px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .confess-container input,
+        .confess-container textarea {
+            font-size: 24px;
+            margin: 15px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        /* Responsive tasarım */
+        @media (max-width: 768px) {
+            .confess-container {
+                margin: 25% auto;
+                padding: 15px;
+            }
+            
+            .confess-container h2 {
+                font-size: 36px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="crt"></div>
+    
+    <header class="fixed-header">
+        <div class="logo" style="font-size: 72px;">Saint 𖤐 sinneR</div>
+        <div class="top-buttons">
+            <button onclick="showLogin()" style="font-size: 24px;">Login</button>
+            <button onclick="showRegister()" style="font-size: 24px;">Register</button>
+        </div>
+        <div class="main-buttons" style="top: 80px;">
+            <button onclick="location.href='index.html'" style="font-size: 32px;">Main Page</button>
+        </div>
+    </header>
+    
+    <div class="confess-container">
+        <h2>CONFESS YOUR SINS</h2>
+        <input type="text" id="nickname" placeholder="Your Church Nickname">
+        <textarea id="reason" placeholder="Why do you seek forgiveness?" rows="5"></textarea>
+        
+        <h3>Are you truly sorry?</h3>
+        <div class="button-group">
+            <button class="glitch-btn" style="font-size: 32px;" onclick="handleConfession('yes')">YES</button>
+            <button class="glitch-btn" style="font-size: 32px;" onclick="handleConfession('no')">NO</button>
+        </div>
+        
+        <button class="glitch-btn" style="font-size: 32px; width: 100%;" onclick="handleGodForgive()">God Forgive Me</button>
+    </div>
+
+    <!-- Login Popup -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogin()">&times;</span>
+            <h2 style="font-size:48px;">Enter the Void</h2>
+            <input type="text" id="login-nickname" placeholder="Church Nickname">
+            <input type="password" id="login-password" placeholder="Password">
+            <button class="glitch-btn" onclick="login()">Descend</button>
+        </div>
+    </div>
+
+    <!-- Register Popup -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegister()">&times;</span>
+            <h2 style="font-size:48px;">Join the Congregation</h2>
+            <input type="text" id="reg-nickname" placeholder="Church Nickname">
+            <input type="password" id="reg-password" placeholder="Password">
+            <button class="glitch-btn" onclick="register()">Submit</button>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        function handleConfession(answer) {
+            if (answer === 'yes') {
+                alert('Your sin has been noted... but forgiveness is not guaranteed.');
+            } else {
+                alert('There is no escape from your sins...');
+            }
+        }
+
+        function handleGodForgive() {
+            const nickname = document.getElementById('nickname').value;
+            const reason = document.getElementById('reason').value;
+            
+            if (!nickname || !reason) {
+                alert('You must provide your nickname and reason for seeking forgiveness.');
+                return;
+            }
+            
+            // Günahı localStorage'a kaydet (şaka amaçlı)
+            const confession = {
+                nickname: nickname,
+                reason: reason,
+                date: new Date().toISOString(),
+                forgiven: false
+            };
+            
+            let confessions = JSON.parse(localStorage.getItem('saint_sinner_confessions') || '[]');
+            confessions.push(confession);
+            localStorage.setItem('saint_sinner_confessions', JSON.stringify(confessions));
+            
+            alert('God has heard your confession... maybe. Only time will tell.');
+            
+            // Formu temizle
+            document.getElementById('nickname').value = '';
+            document.getElementById('reason').value = '';
+        }
+    </script>
+</body>
+</html>
