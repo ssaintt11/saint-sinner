@@ -15,10 +15,10 @@
             background: rgba(0,0,0,.95);
             border-bottom: 3px solid #8B0000;
             padding: 20px 0;
-            z-index: 1000; /* TÜM EFECTLERİN ÜSTÜNDE */
+            z-index: 1000;
         }
 
-        /* ===== YAZI SÜREKLİ GÖRÜNÜR (SABİT) ===== */
+        /* ===== YAZI SÜREKLİ GÖRÜNÜR ===== */
         .countdown-container {
             position: fixed;
             inset: 0;
@@ -30,10 +30,10 @@
 
         .countdown-text {
             font-family: 'Creepster', cursive;
-            font-size: 144px; /* 2 KAT BÜYÜK */
+            font-size: 144px;
             color: #fff;
             text-shadow: 0 0 60px #8B0000;
-            opacity: 1; /* SÜREKLİ GÖRÜNÜR */
+            opacity: 1;
         }
 
         /* ===== ARKAPLAN BAŞLANGIÇTA GÖRÜNMEZ ===== */
@@ -41,28 +41,33 @@
             position: fixed;
             inset: 0;
             background: #000 url('backroooms.png') center/cover no-repeat;
-            opacity: 0; /* BAŞTA KAPALI */
+            opacity: 0;
             z-index: 1;
         }
 
-        /* ===== BOZUK FENER EFECTİ (2x 0.5 sn) ===== */
+        /* ===== FLICKER ANİMASYONU ===== */
         @keyframes broken-flicker {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.2; }
         }
 
         .text-flicker {
-            animation: broken-flicker 0.5s 2; /* 2 kez 0.5 sn */
+            animation: broken-flicker 0.5s 2;
         }
 
         .bg-flicker {
-            animation: broken-flicker 0.5s 2; /* 2 kez 0.5 sn */
+            animation: broken-flicker 0.5s 2;
+        }
+        
+        /* ===== SİYAH ARKAPLAN (ravenn.png'yi SİLER) ===== */
+        body {
+            background: #000 !important;
         }
     </style>
 </head>
 <body>
-    <!-- ===== SABİT HEADER (EFECT DIŞINDA) ===== -->
-    <header class="fixed-header" style="z-index: 1000;">
+    <!-- SABİT HEADER -->
+    <header class="fixed-header">
         <div class="logo" style="font-size: 72px;">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button onclick="showLogin()" style="font-size: 24px;">Login</button>
@@ -73,63 +78,57 @@
         </div>
     </header>
 
-    <!-- ===== YAZI SÜREKLİ GÖRÜNÜR ===== -->
+    <!-- YAZI -->
     <div class="countdown-container">
         <div class="countdown-text" id="countdown-text">BACKROOMS IS OUT!</div>
     </div>
 
-    <!-- ===== ARKAPLAN ===== -->
+    <!-- ARKAPLAN -->
     <div class="animated-background" id="animated-background"></div>
 
-    <!-- ===== JAVASCRIPT ZAMANLAYICI (3.5 SN SONRA BAŞLAR) ===== -->
+    <!-- ZAMANLAYICI -->
     <script>
         const textElement = document.getElementById('countdown-text');
         const bgElement = document.getElementById('animated-background');
 
         function startCountdownEffect() {
-            // 0ms: BAŞLANGIÇ (yazı görünür, arkaplan kapalı)
-            
-            // 3500ms: YAZIYA EFEKT BAŞLASIN (3 saniye sürer - 2x 0.5 sn)
+            // 3500ms: Yazıya efect (3 sn sürer)
             setTimeout(() => {
                 textElement.classList.add('text-flicker');
                 
-                // 4500ms: YAZI EFEKTİ BİTSİN
                 setTimeout(() => {
                     textElement.classList.remove('text-flicker');
                     
-                    // 5000ms: ARKAPLAN EFEKTİ BAŞLASIN (2x 0.5 sn) + ARKAPLAN AÇILSIN
+                    // 5000ms: Arkaplan açılır + efect (1 sn sürer)
                     setTimeout(() => {
+                        bgElement.style.opacity = '1';
                         bgElement.classList.add('bg-flicker');
-                        bgElement.style.opacity = '1'; /* Arkaplan açılır */
                         
-                        // 5500ms: ARKAPLAN EFEKTİ BİTSİN
                         setTimeout(() => {
                             bgElement.classList.remove('bg-flicker');
                             
-                            // 6000ms: İKİSİNE BİRDEN EFEKT (2x 0.5 sn)
+                            // 6000ms: İkisi beraber (1 sn sürer)
                             setTimeout(() => {
                                 textElement.classList.add('text-flicker');
                                 bgElement.classList.add('bg-flicker');
                                 
-                                // 6500ms: HER ŞEY DÜZELSİN
+                                // 6500ms: Her şey düzelir
                                 setTimeout(() => {
                                     textElement.classList.remove('text-flicker');
                                     bgElement.classList.remove('bg-flicker');
                                     bgElement.style.opacity = '0'; /* Arkaplan kapanır */
-                                }, 1000); // 2x 0.5 sn = 1 sn
-                            }, 500); // 0.5 sn bekle
-                        }, 500); // 0.5 sn bekle
-                    }, 500); // 0.5 sn bekle
-                }, 3000); // 3 sn sürer
-            }, 3500); // 3.5 sn sonra başla
+                                }, 1000);
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                }, 3000);
+            }, 3500);
         }
 
-        // Sayfa yüklendiğinde ilk effecti başlat
         window.addEventListener('load', () => {
-            setTimeout(startCountdownEffect, 1000); // 1 sn gecikmeyle başla
+            setTimeout(startCountdownEffect, 1000);
         });
 
-        // Loop için her 8.5 saniyede bir tekrarla (3.5 bekleme + 5 effect süresi)
         setInterval(startCountdownEffect, 8500);
     </script>
 </body>
