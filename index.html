@@ -8,29 +8,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="fixed-header" style="padding:40px 0;">
-        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+    <div class="crt"></div>
+    
+    <header class="fixed-header">
+        <div class="logo">Saint 𖤐 sinneR</div>
         
-        <!-- ÜST BUTONLAR -->
+        <!-- ÜST BUTONLAR (Register/Login) -->
         <div class="top-buttons">
-            <button onclick="showLogin()" style="font-size:16px;">Login</button>
-            <button onclick="showRegister()" style="font-size:16px;">Register</button>
+            <button onclick="showLogin()" style="font-size: 24px;">Login</button>
+            <button onclick="showRegister()" style="font-size: 24px;">Register</button>
         </div>
         
-        <!-- ALT BUTONLAR -->
-        <div class="main-buttons" style="top:90px;">
-            <button onclick="location.href='index.html'" style="font-size:16px;">Main Page</button>
-            <button onclick="location.href='countdown.html'" style="font-size:16px;">Countdown</button>
-            <button onclick="alert('Blog coming soon')" style="font-size:16px;">Blog</button>
-            <button class="forgive-btn" onclick="openForgive()" style="font-size:16px;">Forgive My Sins</button>
+        <!-- ALT BUTONLAR (Main/Counter/Blog/Forgive) -->
+        <div class="main-buttons">
+            <button onclick="location.href='index.html'" style="font-size: 32px;">Main Page</button>
+            <button onclick="location.href='countdown.html'" style="font-size: 32px;">Countdown</button>
+            <button onclick="alert('Blog coming soon')" style="font-size: 32px;">Blog</button>
+            <button class="forgive-btn" onclick="openForgive()" style="font-size: 32px;">Forgive My Sins</button>
         </div>
     </header>
 
-    <main>
-        <h2 style="text-align:center; margin-top:150px; font-size:32px;">Posts will appear here</h2>
+    <!-- İÇERİK ALANI -->
+    <main class="content-grid" id="content-grid">
+        <h2 style="text-align:center; margin-top:150px; color:#fff; font-family:'Share Tech Mono', monospace; font-size:32px;">Posts will appear here</h2>
     </main>
 
-    <!-- POPUP'LAR -->
+    <!-- FORGIVE POPUP -->
     <div id="forgive-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeForgive()">&times;</span>
@@ -43,6 +46,7 @@
         </div>
     </div>
 
+    <!-- LOGIN POPUP -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogin()">&times;</span>
@@ -53,6 +57,7 @@
         </div>
     </div>
 
+    <!-- REGISTER POPUP -->
     <div id="register-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeRegister()">&times;</span>
