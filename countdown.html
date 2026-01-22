@@ -7,29 +7,24 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* ===== KALIN SABİT HEADER (ÇAKIŞMA YOK) ===== */
+        /* ===== SABİT HEADER ===== */
         .fixed-header {
             position: fixed !important;
             top: 0 !important;
             width: 100% !important;
             background: rgba(0,0,0,.95) !important;
-            border-bottom: 4px solid #8B0000 !important; /* DAHA KALIN */
-            padding: 30px 0 !important; /* DAHA KALIN */
+            border-bottom: 3px solid #8B0000 !important;
+            padding: 20px 0 !important;
             z-index: 1000 !important;
         }
         
         .fixed-header .logo {
             font-size: 54px !important; /* 1.5X */
-            top: 25px !important;
-        }
-
-        .fixed-header .main-buttons {
-            top: 110px !important; /* Butonları aşağı al */
         }
 
         /* ===== YAZI 1.5X BÜYÜK (108px) ===== */
         .countdown-text {
-            font-size: 108px !important; /* 1.5X (eski 72px) */
+            font-size: 108px !important; /* 1.5X */
             color: #fff !important;
             text-shadow: 0 0 45px #8B0000 !important;
         }
@@ -63,11 +58,8 @@
     <!-- SABİT HEADER -->
     <header class="fixed-header">
         <div class="logo">Saint 𖤐 sinneR</div>
-        <div class="main-buttons" style="position:absolute; right: 20px;">
-            <button onclick="location.href='countdown.html'" style="font-size: 24px;">Countdown</button>
-        </div>
-        <div class="main-buttons" style="position:absolute; top: 110px; right: 20px;">
-            <button onclick="location.href='index.html'" style="font-size: 24px;">Main Page</button>
+        <div class="main-buttons" style="position:absolute; top: 80px; right: 20px;">
+            <button onclick="location.href='index.html'">Main Page</button>
         </div>
     </header>
 
