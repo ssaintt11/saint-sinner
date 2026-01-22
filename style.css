@@ -1,21 +1,154 @@
+/* ========== ANA ARKAPLAN: RAVENN.PNG ========== */
 body {
     margin: 0;
-    background: #000;
+    height: 100vh;
+    background: #000 url('ravenn.png') center/cover no-repeat fixed;
     color: #fff;
     font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
 }
 
-body::before {
-    content: "";
+/* ========== HEADER SAĞ TARAFTA ========== */
+.fixed-header {
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
+    width: auto;
+    background: rgba(0,0,0,.85);
+    border-bottom: 2px solid #8B0000;
+    border-left: 2px solid #8B0000;
+    padding: 10px 20px;
+    z-index: 100;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* LOGO ORTADA KALSIN */
+.logo {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Creepster', cursive;
+    font-size: 32px;
+    color: #8B0000;
+    text-shadow: 0 0 10px #8B0000;
+}
+
+/* BUTONLAR (Login/Register/Forgive) */
+.header-right button,
+.header-right a {
+    background: #8B0000;
+    color: #000;
+    border: none;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    transition: .2s;
+}
+.header-right button:hover {
+    background: #ff0000;
+    box-shadow: 0 0 8px #8B0000;
+}
+
+/* ========== POPUP KÜÇÜLTÜLDÜ ========== */
+.modal-content {
+    width: 320px;
+    padding: 20px;
+    background: #0a0a0a;
+    border: 2px solid #8B0000;
+    margin: 12% auto;
+    position: relative;
+}
+
+/* ========== CLICK TO... YAZILARI AYNI TİPTE ========== */
+.glitch-btn {
     width: 100%;
-    height: 100%;
+    background: #000;
+    color: #8B0000;
+    border: 2px solid #8B0000;
+    padding: 12px;
+    margin: 8px 0;
+    font-family: 'Creepster', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .25s;
+}
+.glitch-btn:hover {
+    animation: glitch .35s infinite;
+    background: #8B0000;
+    color: #000;
+}
+
+@keyframes glitch {
+    0%,100%{transform:translate(0)}
+    20%{transform:translate(-2px,2px)}
+    40%{transform:translate(-2px,-2px)}
+    60%{transform:translate(2px,2px)}
+    80%{transform:translate(2px,-2px)}
+}
+
+.fake-link {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    margin: 6px 0;
+    font-size: 14px;
+    cursor: default;
+}
+.fake-link:hover {
+    color: #8B0000;
+}
+
+/* ========== COUNTDOWN OVERLAY ========== */
+.countdown-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000 url('backroooms.png') center/cover no-repeat;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .3s;
+}
+.countdown-overlay.active {
+    opacity: 1;
+}
+
+.countdown-text {
+    font-family: 'Creepster', cursive;
+    font-size: 64px;
+    color: #fff;
+    text-shadow: 0 0 20px #8B0000;
+    opacity: 0;
+    transition: opacity .3s;
+    animation: flicker 1.2s infinite;
+}
+
+/* FLICKER ANIMASYONU */
+@keyframes flicker {
+    0%,19%,21%,23%,25%,54%,56%,100% {
+        opacity: 1;
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #8B0000, 0 0 40px #8B0000;
+    }
+    20%,22%,24%,55% {
+        opacity: .4;
+        text-shadow: none;
+    }
+}
+
+/* SCANLINE EFEKTİ */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
     background: repeating-linear-gradient(
         0deg,
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0.15) 1px,
+        rgba(0,0,0,.15),
+        rgba(0,0,0,.15) 1px,
         transparent 1px,
         transparent 2px
     );
@@ -23,43 +156,7 @@ body::before {
     z-index: 999;
 }
 
-.fixed-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    border-bottom: 2px solid #8B0000;
-    padding: 15px;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Creepster', cursive;
-    font-size: 28px;
-    color: #8B0000;
-}
-
-.header-right {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.forgive-btn {
-    background: #8B0000;
-    color: #000;
-    border: none;
-    padding: 8px 15px;
-    font-family: 'Share Tech Mono', monospace;
-    cursor: pointer;
-}
-
+/* DİĞER STİLLER */
 .modal {
     display: none;
     position: fixed;
@@ -71,15 +168,6 @@ body::before {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.modal-content {
-    background: #0a0a0a;
-    border: 2px solid #8B0000;
-    margin: 10% auto;
-    padding: 30px;
-    width: 80%;
-    max-width: 500px;
-}
-
 .close {
     position: absolute;
     right: 15px;
@@ -87,24 +175,6 @@ body::before {
     font-size: 28px;
     cursor: pointer;
     color: #8B0000;
-}
-
-.glitch-btn {
-    background: #000;
-    color: #8B0000;
-    border: 2px solid #8B0000;
-    padding: 15px;
-    width: 100%;
-    margin: 10px 0;
-    font-family: 'Creepster', cursive;
-    cursor: pointer;
-}
-
-.fake-link {
-    color: #666;
-    text-decoration: underline;
-    cursor: default;
-    margin: 10px 0;
 }
 
 input {
