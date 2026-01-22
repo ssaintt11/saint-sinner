@@ -5,21 +5,21 @@ body {
     font-family: 'Share Tech Mono', monospace;
 }
 
-/* KALIN SABİT HEADER */
+/* KALIN HEADER (YAZILAR ÜST ÜSTE BİNMEZ) */
 .fixed-header {
     position: fixed;
     top: 0;
     width: 100%;
     background: rgba(0,0,0,.95);
     border-bottom: 3px solid #8B0000;
-    padding: 20px 0;
+    padding: 40px 0; /* KALIN ALAN */
     z-index: 1000;
 }
 
 /* LOGO */
 .logo {
     position: absolute;
-    top: 20px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Creepster', cursive;
@@ -30,36 +30,18 @@ body {
 /* ÜST BUTONLAR */
 .top-buttons {
     position: absolute;
-    top: 20px;
+    top: 30px;
     right: 20px;
-}
-
-.top-buttons button {
-    background: #8B0000;
-    color: #000;
-    border: none;
-    padding: 5px 10px;
-    font-size: 16px;
-    cursor: pointer;
 }
 
 /* ALT BUTONLAR */
 .main-buttons {
     position: absolute;
-    top: 70px;
+    top: 90px; /* AŞAĞI ALINDI */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 15px;
-}
-
-.main-buttons button {
-    background: transparent;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 8px 12px;
-    font-size: 16px;
-    cursor: pointer;
+    gap: 20px;
 }
 
 /* POPUP */
@@ -78,4 +60,34 @@ body {
     margin: 10% auto;
     background: #0a0a0a;
     border: 2px solid #8B0000;
+}
+
+/* GLITCH BUTON */
+.glitch-btn, .fake-btn {
+    width: 100%;
+    background: #000;
+    color: #8B0000;
+    border: 2px solid #8B0000;
+    padding: 10px;
+    margin: 5px 0;
+    font-family: 'Creepster', cursive;
+    cursor: pointer;
+}
+
+.glitch-btn:hover {
+    animation: glitch 0.3s infinite;
+    background: #8B0000;
+    color: #000;
+}
+
+@keyframes glitch {
+    0%,100%{transform:translate(0)}
+    20%{transform:translate(-2px,2px)}
+    40%{transform:translate(-2px,-2px)}
+    60%{transform:translate(2px,2px)}
+    80%{transform:translate(2px,-2px)}
+}
+
+.fake-btn {
+    cursor: default;
 }

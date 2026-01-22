@@ -9,12 +9,12 @@
 </head>
 <body style="background:#000;">
     <!-- SABİT HEADER -->
-    <header class="fixed-header">
-        <div class="logo">Saint 𖤐 sinneR</div>
-        <button onclick="location.href='index.html'" style="position:absolute; top:20px; right:20px;">Main Page</button>
+    <header class="fixed-header" style="padding:40px 0;">
+        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <button onclick="location.href='index.html'" style="position:absolute; top:40px; right:20px;">Main Page</button>
     </header>
 
-    <!-- YAZI -->
+    <!-- YAZI (1.5X = 108px) -->
     <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:10;">
         <div id="countdown-text" style="font-family:'Creepster'; font-size:108px; color:#fff; text-shadow:0 0 45px #8B0000;">BACKROOMS IS OUT!</div>
     </div>
@@ -48,7 +48,6 @@
                                 textElement.style.animation = 'flicker .5s 2';
                                 bgElement.style.animation = 'flicker .5s 2';
                                 
-                                // 6500ms: Her şey düzelir
                                 setTimeout(() => {
                                     textElement.style.animation = '';
                                     bgElement.style.animation = '';
