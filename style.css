@@ -1,48 +1,86 @@
-/* ========== ANA SAYFA ARKAPLANI ========== */
+/* ========== TEMEL AYARLAR ========== */
 body {
     margin: 0;
     background: #000 url('ravenn.png') center/cover no-repeat fixed;
     color: #fff;
     font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
 }
 
-/* ========== HEADER SAĞ ÜSTTE ========== */
+/* ========== KALIN HEADER ========== */
 .fixed-header {
     position: fixed;
     top: 0;
-    right: 0;
-    background: rgba(0,0,0,.9);
-    border-bottom: 2px solid #8B0000;
-    border-left: 2px solid #8B0000;
-    padding: 12px 20px;
+    width: 100%;
+    background: rgba(0,0,0,.95);
+    border-bottom: 3px solid #8B0000;
+    padding: 15px 0;
     z-index: 100;
-    display: flex;
-    gap: 12px;
-    align-items: center;
 }
 
+/* LOGO ORTA ÜSTTE */
 .logo {
-    position: fixed;
+    position: absolute;
     top: 15px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Creepster', cursive;
-    font-size: 32px;
+    font-size: 36px;
     color: #8B0000;
-    text-shadow: 0 0 10px #8B0000;
+    text-shadow: 0 0 15px #8B0000;
 }
 
-.header-right button {
-    background: #8B0000;
-    color: #000;
-    border: none;
-    padding: 6px 12px;
-    font-size: 13px;
+/* ÜST BUTONLAR (Register/Login) - SAĞ ÜST */
+.top-buttons {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.top-buttons button {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 5px 10px;
+    font-size: 12px;
     font-family: 'Share Tech Mono', monospace;
     cursor: pointer;
 }
 
-/* ========== POPUP & FORM ========== */
+/* ALT BUTONLAR (Main/Counter/Blog/Forgive) - ORTADA */
+.main-buttons {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+}
+
+.main-buttons button {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 15px;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    transition: .2s;
+}
+.main-buttons button:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+/* FORGIVE BUTONU KIRMIZI */
+.forgive-btn {
+    background: #8B0000 !important;
+    color: #000 !important;
+    border-color: #8B0000 !important;
+}
+
+/* ========== POPUP ========== */
 .modal {
     display: none;
     position: fixed;
@@ -62,8 +100,8 @@ body {
     margin: 12% auto;
 }
 
-/* ========== GLITCH BUTONLAR (TÜMÜ) ========== */
-.glitch-btn {
+/* ========== TÜM BUTONLAR AYNI STİLDE ========== */
+.glitch-btn, .fake-btn {
     width: 100%;
     background: #000;
     color: #8B0000;
@@ -73,6 +111,7 @@ body {
     font-family: 'Creepster', cursive;
     font-size: 16px;
     cursor: pointer;
+    transition: .25s;
 }
 .glitch-btn:hover, .fake-btn:hover {
     animation: glitch .35s infinite;
@@ -88,27 +127,12 @@ body {
     80%{transform:translate(2px,-2px)}
 }
 
-/* ========== FAKE BUTONLAR (İŞLEVSİZ) ========== */
-.fake-btn {
-    display: block;
-    width: 100%;
-    background: #000;
-    color: #8B0000;
-    border: 2px solid #8B0000;
-    padding: 12px;
-    margin: 8px 0;
-    font-family: 'Creepster', cursive;
-    font-size: 16px;
-    cursor: default;
-    text-align: center;
-}
-
 /* ========== SCANLINE ========== */
 body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
+    background: repeating-linear-gradient(0deg,rgba(0,0,0,.15),rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);
     pointer-events: none;
     z-index: 999;
 }

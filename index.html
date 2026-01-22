@@ -12,17 +12,25 @@
     
     <header class="fixed-header">
         <div class="logo">Saint 𖤐 sinneR</div>
-        <div class="header-right">
-            <button onclick="location.href='countdown.html'">Countdown</button>
+        
+        <!-- ÜST BUTONLAR (Register/Login) -->
+        <div class="top-buttons">
             <button onclick="showLogin()">Login</button>
             <button onclick="showRegister()">Register</button>
+        </div>
+        
+        <!-- ALT BUTONLAR (Main/Counter/Blog/Forgive) -->
+        <div class="main-buttons">
+            <button onclick="location.href='index.html'">Main Page</button>
+            <button onclick="location.href='countdown.html'">Countdown</button>
+            <button onclick="alert('Blog coming soon')">Blog</button>
             <button class="forgive-btn" onclick="openForgive()">Forgive My Sins</button>
         </div>
     </header>
 
     <!-- İÇERİK ALANI -->
     <main class="content-grid" id="content-grid">
-        <h2 style="text-align:center; margin-top:100px;">Posts will appear here</h2>
+        <h2 style="text-align:center; margin-top:150px; color:#fff; font-family: 'Share Tech Mono', monospace;">Posts will appear here</h2>
     </main>
 
     <!-- FORGIVE POPUP -->
