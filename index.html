@@ -15,29 +15,29 @@
         
         <!-- ÜST BUTONLAR (Register/Login) -->
         <div class="top-buttons">
-            <button onclick="showLogin()">Login</button>
-            <button onclick="showRegister()">Register</button>
+            <button onclick="showLogin()" style="font-size: 24px;">Login</button>
+            <button onclick="showRegister()" style="font-size: 24px;">Register</button>
         </div>
         
         <!-- ALT BUTONLAR (Main/Counter/Blog/Forgive) -->
         <div class="main-buttons">
-            <button onclick="location.href='index.html'">Main Page</button>
-            <button onclick="location.href='countdown.html'">Countdown</button>
-            <button onclick="alert('Blog coming soon')">Blog</button>
-            <button class="forgive-btn" onclick="openForgive()">Forgive My Sins</button>
+            <button onclick="location.href='index.html'" style="font-size: 32px;">Main Page</button>
+            <button onclick="location.href='countdown.html'" style="font-size: 32px;">Countdown</button>
+            <button onclick="alert('Blog coming soon')" style="font-size: 32px;">Blog</button>
+            <button class="forgive-btn" onclick="openForgive()" style="font-size: 32px;">Forgive My Sins</button>
         </div>
     </header>
 
     <!-- İÇERİK ALANI -->
     <main class="content-grid" id="content-grid">
-        <h2 style="text-align:center; margin-top:150px; color:#fff; font-family: 'Share Tech Mono', monospace;">Posts will appear here</h2>
+        <h2 style="text-align:center; margin-top:150px; color:#fff; font-family:'Share Tech Mono', monospace; font-size:32px;">Posts will appear here</h2>
     </main>
 
     <!-- FORGIVE POPUP -->
     <div id="forgive-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeForgive()">&times;</span>
-            <h2>Seek Redemption</h2>
+            <h2 style="font-size:48px;">Seek Redemption</h2>
             <button class="glitch-btn" onclick="location.href='apologize.html'">Click to Apologize</button>
             <button class="fake-btn">Click to be Saved</button>
             <button class="fake-btn">Click to Forgive</button>
@@ -50,10 +50,10 @@
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogin()">&times;</span>
-            <h2>Enter the Void</h2>
+            <h2 style="font-size:48px;">Enter the Void</h2>
             <input type="text" id="login-nickname" placeholder="Church Nickname">
             <input type="password" id="login-password" placeholder="Password">
-            <button onclick="login()">Descend</button>
+            <button class="glitch-btn" onclick="login()">Descend</button>
         </div>
     </div>
 
@@ -61,10 +61,10 @@
     <div id="register-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeRegister()">&times;</span>
-            <h2>Join the Congregation</h2>
+            <h2 style="font-size:48px;">Join the Congregation</h2>
             <input type="text" id="reg-nickname" placeholder="Church Nickname">
             <input type="password" id="reg-password" placeholder="Password">
-            <button onclick="register()">Submit</button>
+            <button class="glitch-btn" onclick="register()">Submit</button>
         </div>
     </div>
 
