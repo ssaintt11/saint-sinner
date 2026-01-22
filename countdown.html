@@ -7,56 +7,70 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
-<body>
-    <!-- HEADER -->
+<body style="background:#000;">
+    <!-- SABİT HEADER -->
     <header class="fixed-header">
-        <div class="logo" style="font-size: 48px;">Saint 𖤐 sinneR</div>
+        <div class="logo">Saint 𖤐 sinneR</div>
         <button onclick="location.href='index.html'" style="position:absolute; top:20px; right:20px;">Main Page</button>
     </header>
 
     <!-- YAZI -->
-    <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center;">
-        <div id="countdown-text" style="font-size:108px; font-family:'Creepster'; color:#fff; text-shadow:0 0 45px #8B0000;">BACKROOMS IS OUT!</div>
+    <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:10;">
+        <div id="countdown-text" style="font-family:'Creepster'; font-size:108px; color:#fff; text-shadow:0 0 45px #8B0000;">BACKROOMS IS OUT!</div>
     </div>
 
     <!-- ARKAPLAN -->
-    <div id="animated-background" style="position:fixed; inset:0; background:#000 url('backroooms.png') center/cover no-repeat; opacity:0; z-index:-1;"></div>
+    <div id="animated-bg" style="position:fixed; inset:0; background:url('backroooms.png') center/cover no-repeat; opacity:0; z-index:1;"></div>
 
     <!-- ZAMANLAYICI -->
     <script>
-        const text = document.getElementById('countdown-text');
-        const bg = document.getElementById('animated-background');
+        const textElement = document.getElementById('countdown-text');
+        const bgElement = document.getElementById('animated-bg');
 
-        function effect() {
+        function countdownEffect() {
+            // 3500ms: Yazıya flicker
             setTimeout(() => {
-                text.style.animation = 'flicker .5s 2';
+                textElement.style.animation = 'flicker .5s 2';
+                
                 setTimeout(() => {
-                    text.style.animation = '';
-                    bg.style.opacity = '1';
-                    bg.style.animation = 'flicker .5s 2';
+                    textElement.style.animation = '';
+                    
+                    // 5000ms: Arkaplan açılır + flicker
                     setTimeout(() => {
-                        bg.style.animation = '';
+                        bgElement.style.opacity = '1';
+                        bgElement.style.animation = 'flicker .5s 2';
+                        
                         setTimeout(() => {
-                            text.style.animation = 'flicker .5s 2';
-                            bg.style.animation = 'flicker .5s 2';
+                            bgElement.style.animation = '';
+                            
+                            // 6000ms: İkisi beraber flicker
                             setTimeout(() => {
-                                text.style.animation = '';
-                                bg.style.animation = '';
-                                bg.style.opacity = '0';
-                            }, 1000);
+                                textElement.style.animation = 'flicker .5s 2';
+                                bgElement.style.animation = 'flicker .5s 2';
+                                
+                                // 6500ms: Her şey düzelir
+                                setTimeout(() => {
+                                    textElement.style.animation = '';
+                                    bgElement.style.animation = '';
+                                    bgElement.style.opacity = '0';
+                                }, 1000);
+                            }, 500);
                         }, 500);
                     }, 500);
                 }, 3000);
             }, 3500);
         }
 
-        window.onload = () => setTimeout(effect, 1000);
-        setInterval(effect, 8500);
+        window.addEventListener('load', () => {
+            setTimeout(countdownEffect, 1000);
+            setInterval(countdownEffect, 8500);
+        });
     </script>
 
     <style>
         @keyframes flicker {
-            0%,100%{opacity:1} 50%{opacity:.2}
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
         }
     </style>
 </body>

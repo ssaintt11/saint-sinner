@@ -6,15 +6,11 @@ function openForgive() { document.getElementById('forgive-modal').style.display 
 function closeForgive() { document.getElementById('forgive-modal').style.display = 'none'; }
 
 function login() {
-    alert('Login demo - Firebase kurulumuna geçilecek');
+    alert('Login demo');
     closeLogin();
 }
 
 function register() {
-    alert('Register demo - Firebase kurulumuna geçilecek');
+    alert('Register demo');
     closeRegister();
-}
-
-function logout() {
-    location.reload();
 }
