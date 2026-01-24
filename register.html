@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Saint 𖤐 sinneR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
+    
+    <!-- HEADER (HER SAYFADA AYNI) -->
+    <header class="fixed-header" style="padding:60px 0;">
+        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <div class="top-buttons">
+            <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
+            <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
+        </div>
+        <div class="main-buttons" style="top:110px;">
+            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
+            <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
+            <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
+            <button class="backrooms-btn" onclick="location.href='forgive.html'">Forgive My Sins</button>
+        </div>
+    </header>
+
+    <!-- REGISTER FORM -->
+    <div class="modal-content" style="margin:10% auto; max-width:500px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
+        
+        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">JOIN THE CONGREGATION</h2>
+        
+        <form id="register-form">
+            <!-- 1. Takma Ad -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username (Takma Ad) *</label>
+            <input type="text" id="register-username" placeholder="Your sinful alias" required 
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            
+            <!-- 2. Mezhep -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination (Mezhep) *</label>
+            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required 
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            
+            <!-- 3. Kilise -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church (Kilise)</label>
+            <input type="text" id="register-church" placeholder="Your local church (optional)" 
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            
+            <!-- 4. Şifre -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password (Şifre) *</label>
+            <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6"
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            
+            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">REGISTER</button>
+        </form>
+        
+        <div id="register-message" style="margin-top:20px; text-align:center; color:#fff; font-family:'Share Tech Mono', monospace;"></div>
+        
+        <p style="text-align:center; margin-top:20px; color:#fff; font-family:'Share Tech Mono', monospace;">
+            Zaten bir hesabın var mı? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Giriş Yap</a>
+        </p>
+    </div>
+
+    <!-- SUPABASE CONNECTION -->
+    <script type="module">
+        import { supabase } from './supabase.js';
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('register-username').value;
+            const denomination = document.getElementById('register-denomination').value;
+            const church = document.getElementById('register-church').value;
+            const password = document.getElementById('register-password').value;
+            
+            // Şifre uzunluk kontrolü
+            if (password.length < 6) {
+                document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Password must be at least 6 characters!</p>`;
+                return;
+            }
+            
+            // FAKE EMAIL OLUŞTUR (username@fake-email.com)
+            const fakeEmail = `${username}@saint-sinner-fake.com`;
+            
+            // 1. Auth ile kayıt ol
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: fakeEmail,
+                password: password,
+                options: {
+                    data: {
+                        username: username
+                    }
+                }
+            });
+            
+            if (authError) {
+                document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Registration failed: ${authError.message}</p>`;
+                return;
+            }
+            
+            // 2. Profil tablosuna ek bilgileri kaydet
+            const userId = authData.user.id;
+            const { error: profileError } = await supabase.from('profiles').insert([
+                {
+                    id: userId,
+                    username: username,
+                    denomination: denomination,
+                    church: church
+                }
+            ]);
+            
+            if (profileError) {
+                document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Profile error: ${profileError.message}</p>`;
+                return;
+            }
+            
+            // Başarılı
+            document.getElementById('register-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Registration successful! Welcome, ${username}!</p>`;
+            setTimeout(() => {
+                window.location.href = 'profile.html';
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
