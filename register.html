@@ -6,10 +6,12 @@
     <title>Register - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- SUPABASE GLOBAL -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
-    <!-- HEADER (HER SAYFADA AYNI) -->
     <header class="fixed-header" style="padding:60px 0;">
         <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
@@ -24,31 +26,22 @@
         </div>
     </header>
 
-    <!-- REGISTER FORM -->
     <div class="modal-content" style="margin:10% auto; max-width:500px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
         
         <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">JOIN THE CONGREGATION</h2>
         
         <form id="register-form">
-            <!-- 1. Username -->
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username *</label>
-            <input type="text" id="register-username" placeholder="Your sinful alias" required 
-                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            <input type="text" id="register-username" placeholder="Your sinful alias" required>
             
-            <!-- 2. Denomination -->
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination *</label>
-            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required 
-                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required>
             
-            <!-- 3. Church -->
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church</label>
-            <input type="text" id="register-church" placeholder="Your local church (optional)" 
-                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            <input type="text" id="register-church" placeholder="Your local church (optional)">
             
-            <!-- 4. Password -->
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password *</label>
-            <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6"
-                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
+            <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6">
             
             <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">REGISTER</button>
         </form>
@@ -60,64 +53,53 @@
         </p>
     </div>
 
-    <!-- SUPABASE CONNECTION -->
-    <script type="module">
-        import { supabase } from './supabase.js';
-
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('register-form');
             
-            const username = document.getElementById('register-username').value;
-            const denomination = document.getElementById('register-denomination').value;
-            const church = document.getElementById('register-church').value;
-            const password = document.getElementById('register-password').value;
-            
-            // Şifre uzunluk kontrolü
-            if (password.length < 6) {
-                document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Password must be at least 6 characters!</p>`;
-                return;
-            }
-            
-            // FAKE EMAIL OLUŞTUR
-            const fakeEmail = `${username}@saint-sinner-fake.com`;
-            
-            // 1. Auth ile kayıt ol
-            const { data: authData, error: authError } = await supabase.auth.signUp({
-                email: fakeEmail,
-                password: password,
-                options: {
-                    data: {
-                        username: username
-                    }
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('register-username').value;
+                const denomination = document.getElementById('register-denomination').value;
+                const church = document.getElementById('register-church').value;
+                const password = document.getElementById('register-password').value;
+                
+                if (password.length < 6) {
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Password must be at least 6 characters!</p>`;
+                    return;
                 }
-            });
-            
-            if (authError) {
-                document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Registration failed: ${authError.message}</p>`;
-                return;
-            }
-            
-            // 2. Profil tablosuna ekle
-            const { error: profileError } = await supabase.from('profiles').insert([
-                {
+                
+                const fakeEmail = `${username}@saint-sinner-fake.com`;
+                
+                // Supabase global değişken
+                const { data: authData, error: authError } = await window.supabase.auth.signUp({
+                    email: fakeEmail,
+                    password: password,
+                    options: { data: { username: username } }
+                });
+                
+                if (authError) {
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
+                    return;
+                }
+                
+                const { error: profileError } = await window.supabase.from('profiles').insert([{
                     id: authData.user.id,
                     username: username,
                     denomination: denomination,
                     church: church,
                     title: `!${Math.floor(Math.random() * 900000) + 100000}`
+                }]);
+                
+                if (profileError) {
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
+                    return;
                 }
-            ]);
-            
-            if (profileError) {
-                document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Profile error: ${profileError.message}</p>`;
-                return;
-            }
-            
-            // Başarılı
-            document.getElementById('register-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Registration successful! Welcome, ${username}!</p>`;
-            setTimeout(() => {
-                window.location.href = 'profile.html';
-            }, 1500);
+                
+                document.getElementById('register-message').innerHTML = `<p style="color: #00FF00;">Registration successful! Welcome, ${username}!</p>`;
+                setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+            });
         });
     </script>
 
