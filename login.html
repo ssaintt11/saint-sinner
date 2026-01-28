@@ -9,7 +9,7 @@
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
-    <!-- HEADER -->
+    <!-- HEADER (HER SAYFADA AYNI) -->
     <header class="fixed-header" style="padding:60px 0;">
         <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
@@ -47,39 +47,40 @@
     </div>
 
     <!-- SUPABASE CONNECTION -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('login-form');
+    <script type="module">
+        import { supabase } from './supabase.js';
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('login-username').value;
-                const password = document.getElementById('login-password').value;
-                
-                // Fake email oluştur
-                const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}@saint-sinner-fake.com`;
-                
-                try {
-                    const { data, error } = await window.supabase.auth.signInWithPassword({
-                        email: fakeEmail,
-                        password: password
-                    });
-                    
-                    if (error) {
-                        document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Login failed: ${error.message}</p>`;
-                        return;
-                    }
-                    
-                    document.getElementById('login-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Welcome back, sinner! Redirecting...</p>`;
-                    setTimeout(() => {
-                        window.location.href = 'profile.html';
-                    }, 1500);
-                    
-                } catch (error) {
-                    document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${error.message}</p>`;
-                }
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            // 1. Username'den email'i bul
+            const { data: userData, error: findError } = await supabase.rpc('login_with_username', {
+                username_input: username,
+                password_input: password
             });
+            
+            if (findError || userData.error) {
+                document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${findError?.message || userData.message}</p>`;
+                return;
+            }
+            
+            // 2. Email ve şifre ile giriş yap
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: userData.email,
+                password: password
+            });
+            
+            if (error) {
+                document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Login failed: ${error.message}</p>`;
+            } else {
+                document.getElementById('login-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Welcome back, sinner! Redirecting...</p>`;
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+            }
         });
     </script>
 

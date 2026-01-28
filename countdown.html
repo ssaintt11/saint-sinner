@@ -9,7 +9,7 @@
 </head>
 <body style="background:#000;">
     
-    <!-- HEADER -->
+    <!-- HEADER (HER SAYFADA AYNI) -->
     <header class="fixed-header" style="padding:60px 0;">
         <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
@@ -24,54 +24,60 @@
         </div>
     </header>
 
-    <!-- COUNTDOWN -->
-    <div class="modal-content" style="margin:10% auto; max-width:600px; text-align:center;">
-        <h2 style="font-size:48px; color:#fff; text-shadow:0 0 20px #8B0000; margin-bottom:30px; font-family:'Creepster',cursive;">
-            THE BACKROOMS AWAIT
-        </h2>
-        
-        <div id="countdown" style="font-size:72px; color:#8B0000; text-shadow:0 0 30px #8B0000; font-family:'Share Tech Mono', monospace; margin:50px 0;">
-            00:00:00:00
-        </div>
-        
-        <p style="color:#888; font-size:18px; margin-top:30px;">
-            Something is coming...<br>
-            You cannot escape...
-        </p>
-        
-        <div style="margin-top:50px; padding:20px; background:#0D0D0D; border:1px solid #8B0000;">
-            <p style="color:#8B0000; font-size:14px;">
-                ⚠ WARNING: No-clipping detected in your area ⚠
-            </p>
-        </div>
+    <!-- YAZI (1.5X = 108px) -->
+    <div style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:10;">
+        <div id="countdown-text" style="font-family:'Creepster'; font-size:108px; color:#fff; text-shadow:0 0 45px #8B0000;">BACKROOMS IS OUT!</div>
     </div>
 
+    <!-- ARKAPLAN -->
+    <div id="animated-bg" style="position:fixed; inset:0; background:url('backroooms.png') center/cover no-repeat; opacity:0; z-index:1;"></div>
+
+    <!-- ZAMANLAYICI -->
     <script>
-        // Countdown - örnek olarak 30 gün sonra
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 30);
-        
-        function updateCountdown() {
-            const now = new Date();
-            const diff = targetDate - now;
-            
-            if (diff <= 0) {
-                document.getElementById('countdown').innerHTML = '00:00:00:00';
-                return;
-            }
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('countdown').innerHTML = 
-                `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        const textElement = document.getElementById('countdown-text');
+        const bgElement = document.getElementById('animated-bg');
+
+        function countdownEffect() {
+            setTimeout(() => {
+                textElement.style.animation = 'flicker .5s 2';
+                
+                setTimeout(() => {
+                    textElement.style.animation = '';
+                    
+                    setTimeout(() => {
+                        bgElement.style.opacity = '1';
+                        bgElement.style.animation = 'flicker .5s 2';
+                        
+                        setTimeout(() => {
+                            bgElement.style.animation = '';
+                            
+                            setTimeout(() => {
+                                textElement.style.animation = 'flicker .5s 2';
+                                bgElement.style.animation = 'flicker .5s 2';
+                                
+                                setTimeout(() => {
+                                    textElement.style.animation = '';
+                                    bgElement.style.animation = '';
+                                    bgElement.style.opacity = '0';
+                                }, 1000);
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                }, 3000);
+            }, 3500);
         }
-        
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+
+        window.addEventListener('load', () => {
+            setTimeout(countdownEffect, 1000);
+            setInterval(countdownEffect, 8500);
+        });
     </script>
 
+    <style>
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+    </style>
 </body>
 </html>
