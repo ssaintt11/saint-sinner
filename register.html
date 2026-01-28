@@ -6,15 +6,12 @@
     <title>Register - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <!-- SUPABASE CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
     <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
             <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
@@ -30,48 +27,36 @@
     <!-- REGISTER FORM -->
     <div class="modal-content" style="margin:10% auto; max-width:500px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
         
-        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:10px; font-family:'Creepster',cursive;">
-            NO CLIP INTO THE VOID
-        </h2>
-        <p style="text-align:center; color:#888; margin-bottom:30px; font-size:14px;">
-            You have found the entrance... there is no escape now.
-        </p>
+        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">JOIN THE CONGREGATION</h2>
         
         <form id="register-form">
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
-                Wanderer Name *
-            </label>
-            <input type="text" id="register-username" placeholder="How will they know you?" required 
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username *</label>
+            <input type="text" id="register-username" placeholder="Your sinful alias" required 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
-                Your Level *
-            </label>
-            <input type="text" id="register-level" placeholder="e.g., Level 0, Level 1, The Hub..." required 
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination *</label>
+            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
-                Entity Encountered
-            </label>
-            <input type="text" id="register-entity" placeholder="What have you seen? (optional)" 
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church</label>
+            <input type="text" id="register-church" placeholder="Your local church (optional)" 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
-                Access Code *
-            </label>
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password *</label>
             <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6"
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">BECOME LOST</button>
+            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">REGISTER</button>
         </form>
         
         <div id="register-message" style="margin-top:20px; text-align:center; color:#fff; font-family:'Share Tech Mono', monospace;"></div>
         
         <p style="text-align:center; margin-top:20px; color:#fff; font-family:'Share Tech Mono', monospace;">
-            Already lost? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Enter the Void</a>
+            Already have an account? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Login</a>
         </p>
     </div>
 
+    <!-- SUPABASE CONNECTION -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('register-form');
@@ -79,85 +64,62 @@
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const username = document.getElementById('register-username').value.trim();
-                const level = document.getElementById('register-level').value.trim();
-                const entity = document.getElementById('register-entity').value.trim();
+                const username = document.getElementById('register-username').value;
+                const denomination = document.getElementById('register-denomination').value;
+                const church = document.getElementById('register-church').value;
                 const password = document.getElementById('register-password').value;
                 
+                // Şifre uzunluk kontrolü
                 if (password.length < 6) {
-                    document.getElementById('register-message').innerHTML = 
-                        `<p style="color: #8B0000;">Access code must be at least 6 characters!</p>`;
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Password must be at least 6 characters!</p>`;
                     return;
                 }
                 
-                // Username kontrolü
-                if (username.length < 3) {
-                    document.getElementById('register-message').innerHTML = 
-                        `<p style="color: #8B0000;">Wanderer name must be at least 3 characters!</p>`;
-                    return;
-                }
-                
-                const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}@saint-sinner.void`;
+                // Fake email oluştur (rate limit için benzersiz)
+                const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}-${Date.now()}@saint-sinner-fake.com`;
                 
                 try {
-                    // Önce username'in kullanılıp kullanılmadığını kontrol et
-                    const { data: existingUser } = await window.supabase
-                        .from('profiles')
-                        .select('username')
-                        .eq('username', username)
-                        .single();
-                    
-                    if (existingUser) {
-                        document.getElementById('register-message').innerHTML = 
-                            `<p style="color: #8B0000;">This wanderer name is already taken...</p>`;
-                        return;
-                    }
-                    
-                    // Kullanıcı oluştur
+                    // 1. Auth ile kayıt ol
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
                         email: fakeEmail,
                         password: password,
-                        options: { 
-                            data: { 
-                                username: username,
-                                level: level,
-                                entity: entity
-                            } 
+                        options: {
+                            data: {
+                                username: username
+                            }
                         }
                     });
                     
                     if (authError) {
-                        document.getElementById('register-message').innerHTML = 
-                            `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
+                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Registration failed: ${authError.message}</p>`;
                         return;
                     }
                     
-                    // Profil oluştur
-                    const { error: profileError } = await window.supabase.from('profiles').insert([{
-                        id: authData.user.id,
-                        username: username,
-                        denomination: level,
-                        church: entity,
-                        title: `!${Math.floor(Math.random() * 900000) + 100000}`
-                    }]);
+                    // 2. Profil tablosuna ekle
+                    const userId = authData.user.id;
+                    const { error: profileError } = await window.supabase.from('profiles').insert([
+                        {
+                            id: userId,
+                            username: username,
+                            denomination: denomination,
+                            church: church,
+                            title: `!${Math.floor(Math.random() * 900000) + 100000}`
+                        }
+                    ]);
                     
                     if (profileError) {
-                        document.getElementById('register-message').innerHTML = 
-                            `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
+                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Profile error: ${profileError.message}</p>`;
                         return;
                     }
                     
-                    document.getElementById('register-message').innerHTML = 
-                        `<p style="color: #00FF00;">You are now lost, ${username}... Welcome.</p>`;
-                    
-                    setTimeout(() => { 
-                        window.location.href = 'index.html'; 
+                    // Başarılı
+                    document.getElementById('register-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Registration successful! Welcome, ${username}!</p>`;
+                    setTimeout(() => {
+                        window.location.href = 'profile.html';
                     }, 1500);
                     
                 } catch (error) {
-                    console.error('JS Error:', error);
-                    document.getElementById('register-message').innerHTML = 
-                        `<p style="color: #8B0000;">Error: ${error.message}</p>`;
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${error.message}</p>`;
                 }
             });
         });

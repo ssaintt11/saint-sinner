@@ -6,15 +6,12 @@
     <title>Profile - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <!-- SUPABASE CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
     <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='profile.html'">Profile</button>
             <button class="backrooms-btn" onclick="logout()">Logout</button>
@@ -29,9 +26,7 @@
 
     <!-- PROFILE -->
     <div class="modal-content" style="margin:10% auto; max-width:500px;">
-        <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px; font-family:'Creepster',cursive;">
-            WANDERER PROFILE
-        </h2>
+        <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">WANDERER PROFILE</h2>
         
         <div id="profile-content">
             <p style="text-align:center; color:#888;">Loading profile...</p>
@@ -44,8 +39,6 @@
             await window.supabase.auth.signOut();
             window.location.href = 'index.html';
         }
-        
-        window.logout = logout;
         
         // Profil yükle
         async function loadProfile() {

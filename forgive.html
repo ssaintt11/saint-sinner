@@ -6,15 +6,12 @@
     <title>Forgive - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <!-- SUPABASE CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
     <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
             <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
@@ -27,135 +24,32 @@
         </div>
     </header>
     
-    <div class="forgive-container">
-        <h1 class="forgive-title">CONFESS YOUR SINS</h1>
-        <p class="forgive-subtitle">The entities are listening... they remember everything...</p>
+    <div class="modal-content" style="margin:10% auto; max-width:700px;">
+        <h1 style="font-family:'Creepster',cursive; font-size:56px; color:#8B0000; text-shadow:0 0 20px #8B0000, 0 0 40px #FF0000; text-align:center; margin-bottom:30px;">
+            CONFESS YOUR SINS
+        </h1>
+        <p style="text-align:center; color:#888; margin-bottom:30px; font-size:18px; font-style:italic;">
+            The entities are listening... they remember everything...
+        </p>
         
-        <input type="text" id="nickname" class="forgive-input" placeholder="Your Wanderer Name... or remain anonymous">
+        <input type="text" id="nickname" placeholder="Your Church Nickname" 
+               style="font-size:18px; width:100%; padding:15px; margin-bottom:20px; background:#1A1A1A; border:2px solid #8B0000; color:#fff; font-family:'Share Tech Mono', monospace;">
         
-        <textarea id="reason" class="forgive-input" placeholder="What have you done in the dark? What horrors have you witnessed? What sins stain your soul?&#10;&#10;The Backrooms know...&#10;The Backrooms remember...&#10;Confess, or be consumed..." rows="6"></textarea>
+        <textarea id="reason" placeholder="Why do you seek forgiveness?" rows="5" 
+                  style="font-size:18px; width:100%; padding:15px; margin-bottom:20px; background:#1A1A1A; border:2px solid #8B0000; color:#fff; font-family:'Share Tech Mono', monospace;"></textarea>
         
-        <h3 class="forgive-question">Do you seek redemption... or merely survival?</h3>
+        <h3 style="font-size:32px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin:30px 0;">
+            Are you truly sorry?
+        </h3>
         
-        <div class="forgive-buttons">
-            <button class="forgive-btn forgive-btn-yes" onclick="handleYes()">REDEMPTION</button>
-            <button class="forgive-btn forgive-btn-no" onclick="handleNo()">SURVIVAL</button>
+        <div style="display:flex; gap:20px; justify-content:center; margin:30px 0;">
+            <button class="glitch-btn" style="font-size:32px;" onclick="alert('Your sin has been noted...')">YES</button>
+            <button class="glitch-btn" style="font-size:32px;" onclick="alert('There is no escape...')">NO</button>
         </div>
         
-        <button class="forgive-final-btn" onclick="confess()">
-            ☠ SUBMIT TO THE VOID ☠
+        <button class="glitch-btn" style="font-size:32px; width:100%;" onclick="alert('God has heard you... maybe')">
+            God Forgive Me
         </button>
-        
-        <div id="confession-result" style="margin-top:30px; text-align:center; display:none;"></div>
     </div>
-
-    <script>
-        let choice = null;
-        
-        function handleYes() {
-            choice = 'redemption';
-            document.querySelectorAll('.forgive-btn').forEach(btn => {
-                btn.style.opacity = '0.5';
-            });
-            event.target.style.opacity = '1';
-            event.target.style.boxShadow = '0 0 30px #8B0000';
-        }
-        
-        function handleNo() {
-            choice = 'survival';
-            document.querySelectorAll('.forgive-btn').forEach(btn => {
-                btn.style.opacity = '0.5';
-            });
-            event.target.style.opacity = '1';
-            event.target.style.boxShadow = '0 0 30px #FF0000';
-        }
-        
-        async function confess() {
-            const nickname = document.getElementById('nickname').value.trim() || 'Anonymous Wanderer';
-            const reason = document.getElementById('reason').value.trim();
-            const resultDiv = document.getElementById('confession-result');
-            
-            if (!reason) {
-                resultDiv.innerHTML = `
-                    <p style="color: #8B0000; font-size: 24px; font-family: 'Creepster', cursive; text-shadow: 0 0 10px #8B0000;">
-                        ☠ The Void rejects empty confessions... ☠
-                    </p>
-                `;
-                resultDiv.style.display = 'block';
-                return;
-            }
-            
-            if (!choice) {
-                resultDiv.innerHTML = `
-                    <p style="color: #8B0000; font-size: 24px; font-family: 'Creepster', cursive; text-shadow: 0 0 10px #8B0000;">
-                        ☠ Choose your path, wanderer... redemption or survival? ☠
-                    </p>
-                `;
-                resultDiv.style.display = 'block';
-                return;
-            }
-            
-            // Rastgele korkutucu mesajlar
-            const scaryResponses = [
-                "The entities have heard your confession... They are pleased...",
-                "Your sins have been recorded in the endless halls... There is no erasing them now...",
-                "The Backrooms accept your offering... But forgiveness is not guaranteed...",
-                "You have spoken... Now the shadows will judge you...",
-                "Your confession echoes through Level 0... Something is coming...",
-                "The Void has consumed your words... And something has consumed a piece of you...",
-                "Redemption? In this place? How... amusing...",
-                "Survival is all that matters here... And you are not surviving well...",
-                "Your soul bears the marks of this place... They will never fade...",
-                "The buzzing lights heard everything... They never forget..."
-            ];
-            
-            const randomResponse = scaryResponses[Math.floor(Math.random() * scaryResponses.length)];
-            
-            // Veritabanına kaydet
-            try {
-                const { error } = await window.supabase
-                    .from('confessions')
-                    .insert([{
-                        nickname: nickname,
-                        content: reason,
-                        choice: choice
-                    }]);
-                
-                if (error) {
-                    console.error('Confession save error:', error);
-                }
-            } catch (e) {
-                console.error('Error saving confession:', e);
-            }
-            
-            resultDiv.innerHTML = `
-                <div style="background: #1A1A1A; border: 3px solid #8B0000; padding: 30px; animation: flicker 1s infinite;">
-                    <p style="color: #00FF00; font-size: 18px; font-family: 'Share Tech Mono', monospace; margin-bottom: 20px;">
-                        ✓ CONFESSION RECEIVED
-                    </p>
-                    <p style="color: #fff; font-size: 24px; font-family: 'Creepster', cursive; text-shadow: 0 0 10px #8B0000; margin-bottom: 20px;">
-                        "${randomResponse}"
-                    </p>
-                    <p style="color: #888; font-size: 14px; font-family: 'Share Tech Mono', monospace;">
-                        Your confession has been added to the eternal archives...
-                    </p>
-                    <p style="color: #8B0000; font-size: 12px; font-family: 'Share Tech Mono', monospace; margin-top: 20px;">
-                        ⚠ There is no going back now ⚠
-                    </p>
-                </div>
-            `;
-            resultDiv.style.display = 'block';
-            
-            // Formu temizle
-            document.getElementById('nickname').value = '';
-            document.getElementById('reason').value = '';
-            choice = null;
-            document.querySelectorAll('.forgive-btn').forEach(btn => {
-                btn.style.opacity = '1';
-                btn.style.boxShadow = 'none';
-            });
-        }
-    </script>
-
 </body>
 </html>

@@ -6,16 +6,12 @@
     <title>Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <!-- SUPABASE CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
-    <script src="auth.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
     <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
             <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
@@ -28,230 +24,24 @@
         </div>
     </header>
 
-    <!-- POSTS CONTAINER -->
-    <div class="posts-container" id="posts-container">
-        <p style="text-align:center; color:#888; font-size:18px;">Loading posts...</p>
-    </div>
-
-    <!-- ADMIN LINK (Gizli) -->
-    <a href="admin.html" class="admin-link">Admin</a>
-
-    <script>
-        // Posts'u yükle
-        async function loadPosts() {
-            const container = document.getElementById('posts-container');
-            
-            try {
-                const { data: posts, error } = await window.supabase
-                    .from('posts')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error) {
-                    console.error('Error loading posts:', error);
-                    container.innerHTML = `<p style="text-align:center; color:#8B0000;">Error loading posts: ${error.message}</p>`;
-                    return;
-                }
-                
-                if (!posts || posts.length === 0) {
-                    container.innerHTML = `<p style="text-align:center; color:#888;">No posts yet...</p>`;
-                    return;
-                }
-                
-                // Kullanıcı durumunu kontrol et
-                const { data: { user } } = await window.supabase.auth.getUser();
-                
-                let html = '';
-                for (const post of posts) {
-                    // Beğeni sayısını al
-                    const { count: likeCount } = await window.supabase
-                        .from('likes')
-                        .select('*', { count: 'exact' })
-                        .eq('post_id', post.id);
-                    
-                    // Kullanıcı beğenmiş mi?
-                    let userLiked = false;
-                    if (user) {
-                        const { data: userLike } = await window.supabase
-                            .from('likes')
-                            .select('*')
-                            .eq('post_id', post.id)
-                            .eq('user_id', user.id)
-                            .single();
-                        userLiked = !!userLike;
-                    }
-                    
-                    // Yorumları al
-                    const { data: comments } = await window.supabase
-                        .from('comments')
-                        .select('*, profiles(username)')
-                        .eq('post_id', post.id)
-                        .order('created_at', { ascending: true });
-                    
-                    html += `
-                        <div class="post">
-                            <div class="post-header">
-                                <span class="post-title">${escapeHtml(post.title)}</span>
-                                <span class="post-date">${formatDate(post.created_at)}</span>
-                            </div>
-                            <div class="post-content">
-                                <p>${escapeHtml(post.content)}</p>
-                                ${getMediaHtml(post)}
-                            </div>
-                            <div class="post-actions">
-                                <button class="like-btn ${userLiked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
-                                    ${userLiked ? '❤️' : '🖤'} ${likeCount || 0}
-                                </button>
-                            </div>
-                            <div class="comments-section">
-                                <h4 style="color:#8B0000; margin-bottom:10px;">Comments (${comments ? comments.length : 0})</h4>
-                                ${comments && comments.length > 0 ? comments.map(c => `
-                                    <div class="comment">
-                                        <div class="comment-author">${escapeHtml(c.profiles?.username || 'Anonymous')}</div>
-                                        <div>${escapeHtml(c.content)}</div>
-                                    </div>
-                                `).join('') : '<p style="color:#666; font-size:12px;">No comments yet</p>'}
-                                
-                                ${user ? `
-                                    <form onsubmit="addComment(event, ${post.id})">
-                                        <input type="text" class="comment-input" placeholder="Write a comment..." required>
-                                    </form>
-                                ` : `
-                                    <p style="color:#666; font-size:12px; margin-top:10px;">
-                                        <a href="login.html" style="color:#8B0000;">Login</a> to comment
-                                    </p>
-                                `}
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                container.innerHTML = html;
-                
-            } catch (error) {
-                console.error('Error:', error);
-                container.innerHTML = `<p style="text-align:center; color:#8B0000;">Error: ${error.message}</p>`;
-            }
-        }
+    <!-- MAIN CONTENT -->
+    <main style="max-width:900px; margin:200px auto 50px; padding:20px;">
+        <h2 style="text-align:center; color:#fff; font-size:32px; text-shadow:0 0 5px #8B0000; margin-bottom:50px;">
+            WELCOME TO THE VOID
+        </h2>
         
-        // Medya HTML'i oluştur
-        function getMediaHtml(post) {
-            if (!post.media_url) return '';
-            
-            if (post.media_type === 'audio') {
-                return `<audio controls class="post-media" style="height:50px;">
-                    <source src="${escapeHtml(post.media_url)}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>`;
-            } else if (post.media_type === 'video') {
-                return `<video controls class="post-media">
-                    <source src="${escapeHtml(post.media_url)}" type="video/mp4">
-                    Your browser does not support the video element.
-                </video>`;
-            } else if (post.media_type === 'image') {
-                return `<img src="${escapeHtml(post.media_url)}" class="post-media" alt="Post image">`;
-            }
-            return '';
-        }
+        <div style="background:#1A1A1A; border:2px solid #8B0000; padding:30px; text-align:center;">
+            <p style="color:#fff; font-size:18px; margin-bottom:30px;">
+                This is where the lost souls gather...
+            </p>
+            <button class="glitch-btn" onclick="location.href='login.html'">ENTER THE CHURCH</button>
+        </div>
         
-        // HTML escape
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        // Tarih formatla
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString();
-        }
-        
-        // Beğeni toggle
-        async function toggleLike(postId) {
-            try {
-                const { data: { user } } = await window.supabase.auth.getUser();
-                
-                if (!user) {
-                    alert('Please login to like posts');
-                    window.location.href = 'login.html';
-                    return;
-                }
-                
-                // Önce beğeniyi kontrol et
-                const { data: existingLike } = await window.supabase
-                    .from('likes')
-                    .select('*')
-                    .eq('post_id', postId)
-                    .eq('user_id', user.id)
-                    .single();
-                
-                if (existingLike) {
-                    // Beğeniyi kaldır
-                    await window.supabase
-                        .from('likes')
-                        .delete()
-                        .eq('post_id', postId)
-                        .eq('user_id', user.id);
-                } else {
-                    // Beğeni ekle
-                    await window.supabase
-                        .from('likes')
-                        .insert([{ post_id: postId, user_id: user.id }]);
-                }
-                
-                // Sayfayı yenile
-                loadPosts();
-                
-            } catch (error) {
-                console.error('Like error:', error);
-                alert('Error: ' + error.message);
-            }
-        }
-        
-        window.toggleLike = toggleLike;
-        
-        // Yorum ekle
-        async function addComment(event, postId) {
-            event.preventDefault();
-            
-            try {
-                const { data: { user } } = await window.supabase.auth.getUser();
-                
-                if (!user) {
-                    alert('Please login to comment');
-                    return;
-                }
-                
-                const input = event.target.querySelector('input');
-                const content = input.value.trim();
-                
-                if (!content) return;
-                
-                const { error } = await window.supabase
-                    .from('comments')
-                    .insert([{ post_id: postId, user_id: user.id, content: content }]);
-                
-                if (error) {
-                    alert('Error: ' + error.message);
-                    return;
-                }
-                
-                input.value = '';
-                loadPosts();
-                
-            } catch (error) {
-                console.error('Comment error:', error);
-                alert('Error: ' + error.message);
-            }
-        }
-        
-        window.addComment = addComment;
-        
-        // Sayfa yüklendiğinde posts'u yükle
-        document.addEventListener('DOMContentLoaded', loadPosts);
-    </script>
-
+        <div style="margin-top:50px; text-align:center; color:#888;">
+            <p style="font-size:14px;">
+                No clipping detected. Reality is stable... for now.
+            </p>
+        </div>
+    </main>
 </body>
 </html>
