@@ -6,7 +6,7 @@
     <title>Register - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <!-- SUPABASE GLOBAL -->
+    <!-- SUPABASE CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
 </head>
@@ -32,16 +32,20 @@
         
         <form id="register-form">
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username *</label>
-            <input type="text" id="register-username" placeholder="Your sinful alias" required>
+            <input type="text" id="register-username" placeholder="Your sinful alias" required 
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination *</label>
-            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required>
+            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required 
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church</label>
-            <input type="text" id="register-church" placeholder="Your local church (optional)">
+            <input type="text" id="register-church" placeholder="Your local church (optional)" 
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
             <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password *</label>
-            <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6">
+            <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6"
+                   style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
             <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">REGISTER</button>
         </form>
@@ -54,11 +58,17 @@
     </div>
 
     <script>
+        // HATA KONTROLÜ
+        console.log('Register page loaded');
+        console.log('Supabase exists:', typeof window.supabase);
+        
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('register-form');
+            console.log('Form found:', form);
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                console.log('Submit clicked!');
                 
                 const username = document.getElementById('register-username').value;
                 const denomination = document.getElementById('register-denomination').value;
@@ -71,34 +81,42 @@
                 }
                 
                 const fakeEmail = `${username}@saint-sinner-fake.com`;
+                console.log('Trying to register with:', fakeEmail);
                 
-                // Supabase global değişken
-                const { data: authData, error: authError } = await window.supabase.auth.signUp({
-                    email: fakeEmail,
-                    password: password,
-                    options: { data: { username: username } }
-                });
-                
-                if (authError) {
-                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
-                    return;
+                try {
+                    const { data: authData, error: authError } = await window.supabase.auth.signUp({
+                        email: fakeEmail,
+                        password: password,
+                        options: { data: { username: username } }
+                    });
+                    
+                    if (authError) {
+                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
+                        return;
+                    }
+                    
+                    console.log('Auth success:', authData);
+                    
+                    const { error: profileError } = await window.supabase.from('profiles').insert([{
+                        id: authData.user.id,
+                        username: username,
+                        denomination: denomination,
+                        church: church,
+                        title: `!${Math.floor(Math.random() * 900000) + 100000}`
+                    }]);
+                    
+                    if (profileError) {
+                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
+                        return;
+                    }
+                    
+                    document.getElementById('register-message').innerHTML = `<p style="color: #00FF00;">Registration successful! Welcome, ${username}!</p>`;
+                    setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+                    
+                } catch (error) {
+                    console.error('JS Error:', error);
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">JavaScript Error: ${error.message}</p>`;
                 }
-                
-                const { error: profileError } = await window.supabase.from('profiles').insert([{
-                    id: authData.user.id,
-                    username: username,
-                    denomination: denomination,
-                    church: church,
-                    title: `!${Math.floor(Math.random() * 900000) + 100000}`
-                }]);
-                
-                if (profileError) {
-                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
-                    return;
-                }
-                
-                document.getElementById('register-message').innerHTML = `<p style="color: #00FF00;">Registration successful! Welcome, ${username}!</p>`;
-                setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
             });
         });
     </script>
