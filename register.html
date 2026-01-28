@@ -6,12 +6,10 @@
     <title>Register - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <!-- SUPABASE CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
+    <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
         <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
@@ -26,6 +24,7 @@
         </div>
     </header>
 
+    <!-- REGISTER FORM -->
     <div class="modal-content" style="margin:10% auto; max-width:500px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
         
         <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">JOIN THE CONGREGATION</h2>
@@ -57,65 +56,70 @@
         </p>
     </div>
 
+    <!-- SUPABASE CONNECTION -->
     <script>
-        // HATA KONTROLÜ
-        console.log('Register page loaded');
-        console.log('Supabase exists:', typeof window.supabase);
-        
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('register-form');
-            console.log('Form found:', form);
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                console.log('Submit clicked!');
                 
                 const username = document.getElementById('register-username').value;
                 const denomination = document.getElementById('register-denomination').value;
                 const church = document.getElementById('register-church').value;
                 const password = document.getElementById('register-password').value;
                 
+                // Şifre uzunluk kontrolü
                 if (password.length < 6) {
-                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Password must be at least 6 characters!</p>`;
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Password must be at least 6 characters!</p>`;
                     return;
                 }
                 
-                const fakeEmail = `${username}@saint-sinner-fake.com`;
-                console.log('Trying to register with:', fakeEmail);
+                // Rate limit için benzersiz email (her denemede farklı)
+                const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}-${Date.now()}@saint-sinner-fake.com`;
                 
                 try {
+                    // 1. Auth ile kayıt ol
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
                         email: fakeEmail,
                         password: password,
-                        options: { data: { username: username } }
+                        options: {
+                            data: {
+                                username: username
+                            }
+                        }
                     });
                     
                     if (authError) {
-                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
+                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Registration failed: ${authError.message}</p>`;
                         return;
                     }
                     
-                    console.log('Auth success:', authData);
-                    
-                    const { error: profileError } = await window.supabase.from('profiles').insert([{
-                        id: authData.user.id,
-                        username: username,
-                        denomination: denomination,
-                        church: church,
-                        title: `!${Math.floor(Math.random() * 900000) + 100000}`
-                    }]);
+                    // 2. Profil tablosuna ekle
+                    const userId = authData.user.id;
+                    const { error: profileError } = await window.supabase.from('profiles').insert([
+                        {
+                            id: userId,
+                            username: username,
+                            denomination: denomination,
+                            church: church,
+                            title: `!${Math.floor(Math.random() * 900000) + 100000}`
+                        }
+                    ]);
                     
                     if (profileError) {
-                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
+                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Profile error: ${profileError.message}</p>`;
                         return;
                     }
                     
-                    document.getElementById('register-message').innerHTML = `<p style="color: #00FF00;">Registration successful! Welcome, ${username}!</p>`;
-                    setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+                    // Başarılı
+                    document.getElementById('register-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Registration successful! Welcome, ${username}!</p>`;
+                    setTimeout(() => {
+                        window.location.href = 'profile.html';
+                    }, 1500);
                     
                 } catch (error) {
-                    console.error('JS Error:', error);
-                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">JavaScript Error: ${error.message}</p>`;
+                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${error.message}</p>`;
                 }
             });
         });

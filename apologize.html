@@ -8,14 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
+    
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
-            <button onclick="showLogin()" style="font-size:16px;">Login</button>
-            <button onclick="showRegister()" style="font-size:16px;">Register</button>
+            <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
+            <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
         </div>
         <div class="main-buttons" style="top:110px;">
-            <button onclick="location.href='index.html'" style="font-size:16px;">Main Page</button>
+            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
+            <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
+            <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
+            <button class="backrooms-btn" onclick="location.href='forgive.html'">Forgive My Sins</button>
         </div>
     </header>
     
