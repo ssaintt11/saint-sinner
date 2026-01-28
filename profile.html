@@ -11,10 +11,10 @@
     
     <!-- HEADER (HER SAYFADA AYNI) -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='profile.html'">Profile</button>
-            <button class="backrooms-btn" onclick="supabase.auth.signOut().then(() => location.href='index.html')">Logout</button>
+            <button class="backrooms-btn" onclick="logout()">Logout</button>
         </div>
         <div class="main-buttons" style="top:110px;">
             <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
@@ -180,12 +180,6 @@
             const fileExt = file.name.split('.').pop();
             const fileName = `${currentUser.id}.${fileExt}`;
             const filePath = `avatars/${fileName}`;
-            
-            // Eski avatarı sil
-            if (originalData.avatar_url) {
-                const oldFileName = originalData.avatar_url.split('/').pop();
-                await supabase.storage.from('avatars').remove([`avatars/${oldFileName}`]);
-            }
             
             // Yeni avatarı yükle
             const { error: uploadError } = await supabase.storage

@@ -11,7 +11,7 @@
     
     <!-- HEADER (HER SAYFADA AYNI) -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px;">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
             <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
@@ -30,23 +30,23 @@
         <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">JOIN THE CONGREGATION</h2>
         
         <form id="register-form">
-            <!-- 1. Takma Ad -->
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username (Takma Ad) *</label>
+            <!-- 1. Username -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username *</label>
             <input type="text" id="register-username" placeholder="Your sinful alias" required 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
             
-            <!-- 2. Mezhep -->
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination (Mezhep) *</label>
+            <!-- 2. Denomination -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination *</label>
             <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
             
-            <!-- 3. Kilise -->
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church (Kilise)</label>
+            <!-- 3. Church -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church</label>
             <input type="text" id="register-church" placeholder="Your local church (optional)" 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
             
-            <!-- 4. Şifre -->
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password (Şifre) *</label>
+            <!-- 4. Password -->
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password *</label>
             <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6"
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace; box-sizing:border-box;">
             
@@ -56,7 +56,7 @@
         <div id="register-message" style="margin-top:20px; text-align:center; color:#fff; font-family:'Share Tech Mono', monospace;"></div>
         
         <p style="text-align:center; margin-top:20px; color:#fff; font-family:'Share Tech Mono', monospace;">
-            Zaten bir hesabın var mı? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Giriş Yap</a>
+            Already have an account? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Login</a>
         </p>
     </div>
 
@@ -78,7 +78,7 @@
                 return;
             }
             
-            // FAKE EMAIL OLUŞTUR (username@fake-email.com)
+            // FAKE EMAIL OLUŞTUR
             const fakeEmail = `${username}@saint-sinner-fake.com`;
             
             // 1. Auth ile kayıt ol
@@ -97,14 +97,14 @@
                 return;
             }
             
-            // 2. Profil tablosuna ek bilgileri kaydet
-            const userId = authData.user.id;
+            // 2. Profil tablosuna ekle
             const { error: profileError } = await supabase.from('profiles').insert([
                 {
-                    id: userId,
+                    id: authData.user.id,
                     username: username,
                     denomination: denomination,
-                    church: church
+                    church: church,
+                    title: `!${Math.floor(Math.random() * 900000) + 100000}`
                 }
             ]);
             
