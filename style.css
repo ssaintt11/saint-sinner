@@ -6,6 +6,8 @@
     --kirmizi: #FF0000;
     --beyaz: #FFFFFF;
     --koyu-siyah: #0D0D0D;
+    --sar: #FFD700;
+    --yesil: #00FF00;
 }
 
 body {
@@ -13,6 +15,7 @@ body {
     background: var(--siyah);
     color: var(--beyaz);
     font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
 }
 
 /* KALIN HEADER */
@@ -35,6 +38,12 @@ body {
     font-size: 48px;
     color: var(--koyu-kirmizi);
     text-shadow: 0 0 10px var(--koyu-kirmizi);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logo:hover {
+    text-shadow: 0 0 20px var(--kirmizi), 0 0 40px var(--koyu-kirmizi);
 }
 
 /* ÜST BUTONLAR */
@@ -52,6 +61,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: .3s;
+    font-family: 'Share Tech Mono', monospace;
 }
 
 .top-buttons button:hover {
@@ -67,6 +77,8 @@ body {
     transform: translateX(-50%);
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .backrooms-btn {
@@ -99,49 +111,323 @@ body {
 }
 
 .glitch-btn:hover {
-    animation: glitch 0.35s infinite;
     background: var(--kirmizi);
+    box-shadow: 0 0 20px var(--koyu-kirmizi);
+}
+
+/* MODAL */
+.modal-content {
+    background: var(--koyu-gri);
+    border: 2px solid var(--koyu-kirmizi);
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* POST STYLES */
+.posts-container {
+    margin-top: 200px;
+    padding: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post {
+    background: var(--koyu-gri);
+    border: 2px solid var(--koyu-kirmizi);
+    margin-bottom: 30px;
+    padding: 20px;
+    position: relative;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--koyu-kirmizi);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.post-title {
+    font-family: 'Creepster', cursive;
+    font-size: 24px;
+    color: var(--koyu-kirmizi);
+    text-shadow: 0 0 5px var(--koyu-kirmizi);
+}
+
+.post-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.post-content {
+    margin-bottom: 15px;
+}
+
+.post-media {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    background: var(--koyu-siyah);
+    border: 1px solid var(--koyu-kirmizi);
+}
+
+.post-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.like-btn {
+    background: transparent;
+    border: 1px solid var(--koyu-kirmizi);
+    color: var(--beyaz);
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    transition: 0.3s;
+}
+
+.like-btn:hover {
+    background: var(--koyu-kirmizi);
+}
+
+.like-btn.liked {
+    background: var(--koyu-kirmizi);
+    color: var(--sar);
+}
+
+.comments-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--koyu-kirmizi);
+}
+
+.comment {
+    background: var(--koyu-siyah);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--koyu-kirmizi);
+}
+
+.comment-author {
+    color: var(--koyu-kirmizi);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.comment-input {
+    width: 100%;
+    padding: 10px;
+    background: var(--koyu-siyah);
+    border: 1px solid var(--koyu-kirmizi);
+    color: var(--beyaz);
+    font-family: 'Share Tech Mono', monospace;
+    margin-top: 10px;
+}
+
+/* ADMIN PANEL */
+.admin-panel {
+    margin-top: 200px;
+    padding: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-form {
+    background: var(--koyu-gri);
+    border: 2px solid var(--koyu-kirmizi);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: var(--koyu-siyah);
+    border: 1px solid var(--koyu-kirmizi);
+    color: var(--beyaz);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+}
+
+.admin-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--beyaz);
+}
+
+/* FORGIVE PAGE - SCARY STYLES */
+.forgive-container {
+    margin-top: 200px;
+    padding: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.forgive-title {
+    font-family: 'Creepster', cursive;
+    font-size: 56px;
+    color: var(--koyu-kirmizi);
+    text-shadow: 0 0 20px var(--koyu-kirmizi), 0 0 40px var(--kirmizi);
+    text-align: center;
+    margin-bottom: 30px;
+    animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+    75% { opacity: 0.9; }
+}
+
+.forgive-subtitle {
+    font-size: 18px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+.forgive-input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: var(--koyu-siyah);
+    border: 2px solid var(--koyu-kirmizi);
+    color: var(--beyaz);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.forgive-input:focus {
+    outline: none;
+    border-color: var(--kirmizi);
     box-shadow: 0 0 15px var(--koyu-kirmizi);
 }
 
-@keyframes glitch {
-    0%,100%{transform:translate(0)}
-    20%{transform:translate(-2px,2px)}
-    40%{transform:translate(-2px,-2px)}
-    60%{transform:translate(2px,2px)}
-    80%{transform:translate(2px,-2px)}
-}
-
-/* FAKE BUTONLAR (kırmızı ama işlevsiz) */
-.fake-btn {
-    background: var(--koyu-kirmizi);
-    color: #000000;
-    border: 2px solid var(--koyu-kirmizi);
-    padding: 10px 20px;
+.forgive-question {
     font-family: 'Creepster', cursive;
-    font-size: 24px;
-    cursor: default;
-    opacity: 0.7;
+    font-size: 32px;
+    color: var(--beyaz);
+    text-align: center;
+    margin: 30px 0;
+    text-shadow: 0 0 10px var(--koyu-kirmizi);
 }
 
-.fake-btn:hover {
-    animation: glitch 0.35s infinite;
+.forgive-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
 }
 
-/* POPUP */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    z-index: 2000;
+.forgive-btn {
+    padding: 15px 40px;
+    font-family: 'Creepster', cursive;
+    font-size: 28px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 2px solid;
 }
-A
-.modal-content {
-    width: 300px;
+
+.forgive-btn-yes {
+    background: var(--koyu-kirmizi);
+    color: var(--beyaz);
+    border-color: var(--kirmizi);
+}
+
+.forgive-btn-yes:hover {
+    background: var(--kirmizi);
+    box-shadow: 0 0 30px var(--koyu-kirmizi);
+}
+
+.forgive-btn-no {
+    background: var(--koyu-siyah);
+    color: var(--beyaz);
+    border-color: var(--koyu-kirmizi);
+}
+
+.forgive-btn-no:hover {
+    background: var(--koyu-kirmizi);
+    box-shadow: 0 0 30px var(--kirmizi);
+}
+
+.forgive-final-btn {
+    width: 100%;
     padding: 20px;
-    margin: 10% auto;
-    background: var(--koyu-gri);
-    border: 2px solid var(--koyu-kirmizi);
+    font-family: 'Creepster', cursive;
+    font-size: 36px;
+    background: linear-gradient(45deg, var(--koyu-kirmizi), var(--kirmizi));
+    color: var(--beyaz);
+    border: 3px solid var(--kirmizi);
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+.forgive-final-btn:hover {
+    box-shadow: 0 0 40px var(--koyu-kirmizi);
+    transform: scale(1.02);
+}
+
+/* SCARY TEXT EFFECTS */
+.scary-text {
+    font-family: 'Creepster', cursive;
+    color: var(--koyu-kirmizi);
+    text-shadow: 0 0 10px var(--koyu-kirmizi);
+}
+
+.glitch-text {
+    position: relative;
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+/* ERROR MESSAGE */
+.error-message {
+    color: var(--kirmizi);
+    text-shadow: 0 0 5px var(--kirmizi);
+    text-align: center;
+    margin-top: 10px;
+}
+
+.success-message {
+    color: var(--yesil);
+    text-shadow: 0 0 5px var(--yesil);
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* HIDDEN ADMIN LINK */
+.admin-link {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    color: var(--koyu-siyah);
+    font-size: 10px;
+    text-decoration: none;
+    opacity: 0.3;
+}
+
+.admin-link:hover {
+    color: var(--koyu-kirmizi);
+    opacity: 1;
 }

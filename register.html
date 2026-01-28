@@ -12,8 +12,9 @@
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
+    <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
             <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
@@ -26,96 +27,137 @@
         </div>
     </header>
 
+    <!-- REGISTER FORM -->
     <div class="modal-content" style="margin:10% auto; max-width:500px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
         
-        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">JOIN THE CONGREGATION</h2>
+        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:10px; font-family:'Creepster',cursive;">
+            NO CLIP INTO THE VOID
+        </h2>
+        <p style="text-align:center; color:#888; margin-bottom:30px; font-size:14px;">
+            You have found the entrance... there is no escape now.
+        </p>
         
         <form id="register-form">
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Username *</label>
-            <input type="text" id="register-username" placeholder="Your sinful alias" required 
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
+                Wanderer Name *
+            </label>
+            <input type="text" id="register-username" placeholder="How will they know you?" required 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Denomination *</label>
-            <input type="text" id="register-denomination" placeholder="e.g., Catholic, Orthodox, Protestant, etc." required 
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
+                Your Level *
+            </label>
+            <input type="text" id="register-level" placeholder="e.g., Level 0, Level 1, The Hub..." required 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Church</label>
-            <input type="text" id="register-church" placeholder="Your local church (optional)" 
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
+                Entity Encountered
+            </label>
+            <input type="text" id="register-entity" placeholder="What have you seen? (optional)" 
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">Password *</label>
+            <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:14px; display:block; margin-bottom:5px;">
+                Access Code *
+            </label>
             <input type="password" id="register-password" placeholder="Min. 6 characters" required minlength="6"
                    style="font-size:18px; width:100%; padding:12px; margin-bottom:20px; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">REGISTER</button>
+            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">BECOME LOST</button>
         </form>
         
         <div id="register-message" style="margin-top:20px; text-align:center; color:#fff; font-family:'Share Tech Mono', monospace;"></div>
         
         <p style="text-align:center; margin-top:20px; color:#fff; font-family:'Share Tech Mono', monospace;">
-            Already have an account? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Login</a>
+            Already lost? <a href="login.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Enter the Void</a>
         </p>
     </div>
 
     <script>
-        // HATA KONTROLÜ
-        console.log('Register page loaded');
-        console.log('Supabase exists:', typeof window.supabase);
-        
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('register-form');
-            console.log('Form found:', form);
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                console.log('Submit clicked!');
                 
-                const username = document.getElementById('register-username').value;
-                const denomination = document.getElementById('register-denomination').value;
-                const church = document.getElementById('register-church').value;
+                const username = document.getElementById('register-username').value.trim();
+                const level = document.getElementById('register-level').value.trim();
+                const entity = document.getElementById('register-entity').value.trim();
                 const password = document.getElementById('register-password').value;
                 
                 if (password.length < 6) {
-                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Password must be at least 6 characters!</p>`;
+                    document.getElementById('register-message').innerHTML = 
+                        `<p style="color: #8B0000;">Access code must be at least 6 characters!</p>`;
                     return;
                 }
                 
-                const fakeEmail = `${username}@saint-sinner-fake.com`;
-                console.log('Trying to register with:', fakeEmail);
+                // Username kontrolü
+                if (username.length < 3) {
+                    document.getElementById('register-message').innerHTML = 
+                        `<p style="color: #8B0000;">Wanderer name must be at least 3 characters!</p>`;
+                    return;
+                }
+                
+                const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}@saint-sinner.void`;
                 
                 try {
-                    const { data: authData, error: authError } = await window.supabase.auth.signUp({
-                        email: fakeEmail,
-                        password: password,
-                        options: { data: { username: username } }
-                    });
+                    // Önce username'in kullanılıp kullanılmadığını kontrol et
+                    const { data: existingUser } = await window.supabase
+                        .from('profiles')
+                        .select('username')
+                        .eq('username', username)
+                        .single();
                     
-                    if (authError) {
-                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
+                    if (existingUser) {
+                        document.getElementById('register-message').innerHTML = 
+                            `<p style="color: #8B0000;">This wanderer name is already taken...</p>`;
                         return;
                     }
                     
-                    console.log('Auth success:', authData);
+                    // Kullanıcı oluştur
+                    const { data: authData, error: authError } = await window.supabase.auth.signUp({
+                        email: fakeEmail,
+                        password: password,
+                        options: { 
+                            data: { 
+                                username: username,
+                                level: level,
+                                entity: entity
+                            } 
+                        }
+                    });
                     
+                    if (authError) {
+                        document.getElementById('register-message').innerHTML = 
+                            `<p style="color: #8B0000;">Registration failed: ${authError.message}</p>`;
+                        return;
+                    }
+                    
+                    // Profil oluştur
                     const { error: profileError } = await window.supabase.from('profiles').insert([{
                         id: authData.user.id,
                         username: username,
-                        denomination: denomination,
-                        church: church,
+                        denomination: level,
+                        church: entity,
                         title: `!${Math.floor(Math.random() * 900000) + 100000}`
                     }]);
                     
                     if (profileError) {
-                        document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
+                        document.getElementById('register-message').innerHTML = 
+                            `<p style="color: #8B0000;">Profile error: ${profileError.message}</p>`;
                         return;
                     }
                     
-                    document.getElementById('register-message').innerHTML = `<p style="color: #00FF00;">Registration successful! Welcome, ${username}!</p>`;
-                    setTimeout(() => { window.location.href = 'profile.html'; }, 1500);
+                    document.getElementById('register-message').innerHTML = 
+                        `<p style="color: #00FF00;">You are now lost, ${username}... Welcome.</p>`;
+                    
+                    setTimeout(() => { 
+                        window.location.href = 'index.html'; 
+                    }, 1500);
                     
                 } catch (error) {
                     console.error('JS Error:', error);
-                    document.getElementById('register-message').innerHTML = `<p style="color: #8B0000;">JavaScript Error: ${error.message}</p>`;
+                    document.getElementById('register-message').innerHTML = 
+                        `<p style="color: #8B0000;">Error: ${error.message}</p>`;
                 }
             });
         });

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Saint 𖤐 sinneR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- SUPABASE CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+<body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
+    
+    <!-- HEADER -->
+    <header class="fixed-header" style="padding:60px 0;">
+        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="top-buttons">
+            <button class="backrooms-btn" onclick="location.href='profile.html'">Profile</button>
+            <button class="backrooms-btn" onclick="logout()">Logout</button>
+        </div>
+        <div class="main-buttons" style="top:110px;">
+            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
+            <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
+            <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
+            <button class="backrooms-btn" onclick="location.href='forgive.html'">Forgive My Sins</button>
+        </div>
+    </header>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel">
+        <h1 style="font-family:'Creepster',cursive; color:#8B0000; text-shadow:0 0 20px #8B0000; text-align:center; margin-bottom:30px;">
+            ☠ ADMIN CONTROL PANEL ☠
+        </h1>
+        
+        <!-- Yeni Post Oluştur -->
+        <div class="admin-form">
+            <h2 style="color:#fff; margin-bottom:20px; font-family:'Creepster',cursive;">Create New Post</h2>
+            
+            <form id="post-form">
+                <label>Title</label>
+                <input type="text" id="post-title" placeholder="Enter post title..." required>
+                
+                <label>Content</label>
+                <textarea id="post-content" rows="5" placeholder="Enter post content..."></textarea>
+                
+                <label>Media Type</label>
+                <select id="post-media-type" onchange="toggleMediaInput()">
+                    <option value="">No Media</option>
+                    <option value="image">Image</option>
+                    <option value="audio">Audio</option>
+                    <option value="video">Video</option>
+                </select>
+                
+                <div id="media-input-container" style="display:none;">
+                    <label>Media File</label>
+                    <input type="file" id="post-media-file" accept="image/*,audio/*,video/*">
+                    <p style="color:#888; font-size:12px; margin-top:5px;">
+                        Max file size: 50MB. Supported formats: JPG, PNG, MP3, WAV, MP4
+                    </p>
+                </div>
+                
+                <div id="media-url-container" style="display:none;">
+                    <label>Or Enter Media URL</label>
+                    <input type="url" id="post-media-url" placeholder="https://example.com/file.mp3">
+                </div>
+                
+                <button type="submit" class="glitch-btn" style="width:100%; margin-top:20px;">
+                    ☠ PUBLISH TO THE VOID ☠
+                </button>
+            </form>
+            
+            <div id="post-message" style="margin-top:20px; text-align:center;"></div>
+        </div>
+        
+        <!-- Mevcut Postları Yönet -->
+        <div class="admin-form">
+            <h2 style="color:#fff; margin-bottom:20px; font-family:'Creepster',cursive;">Manage Posts</h2>
+            <div id="admin-posts-list">
+                <p style="color:#888;">Loading posts...</p>
+            </div>
+        </div>
+        
+        <!-- İtirafları Görüntüle -->
+        <div class="admin-form">
+            <h2 style="color:#fff; margin-bottom:20px; font-family:'Creepster',cursive;">Recent Confessions</h2>
+            <div id="admin-confessions-list">
+                <p style="color:#888;">Loading confessions...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin kontrolü
+        async function checkAdminAccess() {
+            const { data: { user } } = await window.supabase.auth.getUser();
+            
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            // Admin listesi - kendi user ID'nizi buraya ekleyin
+            const adminIds = [
+                // Kendi Supabase user ID'nizi buraya ekleyin
+            ];
+            
+            // Alternatif: profiles tablosundan kontrol
+            const { data: profile } = await window.supabase
+                .from('profiles')
+                .select('is_admin')
+                .eq('id', user.id)
+                .single();
+            
+            if (!adminIds.includes(user.id) && !profile?.is_admin) {
+                alert('Access denied. You are not an admin.');
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Logout
+        async function logout() {
+            await window.supabase.auth.signOut();
+            window.location.href = 'index.html';
+        }
+        
+        window.logout = logout;
+        
+        // Media input toggle
+        function toggleMediaInput() {
+            const mediaType = document.getElementById('post-media-type').value;
+            const fileContainer = document.getElementById('media-input-container');
+            const urlContainer = document.getElementById('media-url-container');
+            
+            if (mediaType) {
+                fileContainer.style.display = 'block';
+                urlContainer.style.display = 'block';
+            } else {
+                fileContainer.style.display = 'none';
+                urlContainer.style.display = 'none';
+            }
+        }
+        
+        window.toggleMediaInput = toggleMediaInput;
+        
+        // Post oluştur
+        document.getElementById('post-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const mediaType = document.getElementById('post-media-type').value;
+            const mediaFile = document.getElementById('post-media-file').files[0];
+            const mediaUrl = document.getElementById('post-media-url').value.trim();
+            
+            const messageDiv = document.getElementById('post-message');
+            messageDiv.innerHTML = '<p style="color:#888;">Publishing...</p>';
+            
+            try {
+                const { data: { user } } = await window.supabase.auth.getUser();
+                
+                let finalMediaUrl = mediaUrl;
+                
+                // Dosya yükleme
+                if (mediaFile) {
+                    const fileExt = mediaFile.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+                    
+                    const { data: uploadData, error: uploadError } = await window.supabase
+                        .storage
+                        .from('media')
+                        .upload(fileName, mediaFile);
+                    
+                    if (uploadError) {
+                        messageDiv.innerHTML = `<p style="color:#8B0000;">Upload error: ${uploadError.message}</p>`;
+                        return;
+                    }
+                    
+                    // Public URL al
+                    const { data: { publicUrl } } = window.supabase
+                        .storage
+                        .from('media')
+                        .getPublicUrl(fileName);
+                    
+                    finalMediaUrl = publicUrl;
+                }
+                
+                // Post oluştur
+                const { error } = await window.supabase
+                    .from('posts')
+                    .insert([{
+                        title: title,
+                        content: content,
+                        media_type: mediaType || null,
+                        media_url: finalMediaUrl || null,
+                        author_id: user.id
+                    }]);
+                
+                if (error) {
+                    messageDiv.innerHTML = `<p style="color:#8B0000;">Error: ${error.message}</p>`;
+                    return;
+                }
+                
+                messageDiv.innerHTML = `<p style="color:#00FF00;">✓ Post published successfully!</p>`;
+                
+                // Formu temizle
+                document.getElementById('post-form').reset();
+                toggleMediaInput();
+                
+                // Post listesini yenile
+                loadAdminPosts();
+                
+            } catch (error) {
+                messageDiv.innerHTML = `<p style="color:#8B0000;">Error: ${error.message}</p>`;
+            }
+        });
+        
+        // Admin post listesi
+        async function loadAdminPosts() {
+            const container = document.getElementById('admin-posts-list');
+            
+            try {
+                const { data: posts, error } = await window.supabase
+                    .from('posts')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    container.innerHTML = `<p style="color:#8B0000;">Error: ${error.message}</p>`;
+                    return;
+                }
+                
+                if (!posts || posts.length === 0) {
+                    container.innerHTML = '<p style="color:#888;">No posts yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = posts.map(post => `
+                    <div style="background:#0D0D0D; border:1px solid #8B0000; padding:15px; margin-bottom:15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h4 style="color:#8B0000; margin:0;">${escapeHtml(post.title)}</h4>
+                            <button onclick="deletePost(${post.id})" style="background:#8B0000; color:#fff; border:none; padding:5px 15px; cursor:pointer;">
+                                Delete
+                            </button>
+                        </div>
+                        <p style="color:#888; font-size:12px; margin:5px 0;">
+                            ${new Date(post.created_at).toLocaleString()} | Type: ${post.media_type || 'text'}
+                        </p>
+                        ${post.media_url ? `<p style="color:#666; font-size:10px;">Media: ${escapeHtml(post.media_url.substring(0, 50))}...</p>` : ''}
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                container.innerHTML = `<p style="color:#8B0000;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        window.loadAdminPosts = loadAdminPosts;
+        
+        // Post sil
+        async function deletePost(postId) {
+            if (!confirm('Are you sure you want to delete this post?')) return;
+            
+            try {
+                const { error } = await window.supabase
+                    .from('posts')
+                    .delete()
+                    .eq('id', postId);
+                
+                if (error) {
+                    alert('Error: ' + error.message);
+                    return;
+                }
+                
+                loadAdminPosts();
+                
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        window.deletePost = deletePost;
+        
+        // İtirafları yükle
+        async function loadConfessions() {
+            const container = document.getElementById('admin-confessions-list');
+            
+            try {
+                const { data: confessions, error } = await window.supabase
+                    .from('confessions')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (error) {
+                    container.innerHTML = `<p style="color:#8B0000;">Error: ${error.message}</p>`;
+                    return;
+                }
+                
+                if (!confessions || confessions.length === 0) {
+                    container.innerHTML = '<p style="color:#888;">No confessions yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = confessions.map(c => `
+                    <div style="background:#0D0D0D; border:1px solid #8B0000; padding:15px; margin-bottom:15px;">
+                        <p style="color:#8B0000; font-size:12px; margin:0 0 5px 0;">
+                            ${escapeHtml(c.nickname)} | ${new Date(c.created_at).toLocaleString()} | Choice: ${c.choice}
+                        </p>
+                        <p style="color:#fff; font-size:14px; margin:0;">${escapeHtml(c.content)}</p>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                container.innerHTML = `<p style="color:#8B0000;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        // HTML escape
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', async function() {
+            const isAdmin = await checkAdminAccess();
+            if (isAdmin) {
+                loadAdminPosts();
+                loadConfessions();
+            }
+        });
+    </script>
+
+</body>
+</html>

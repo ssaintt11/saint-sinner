@@ -6,12 +6,15 @@
     <title>Profile - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- SUPABASE CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
-    <!-- HEADER (HER SAYFADA AYNI) -->
+    <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='profile.html'">Profile</button>
             <button class="backrooms-btn" onclick="logout()">Logout</button>
@@ -24,203 +27,111 @@
         </div>
     </header>
 
-    <!-- PROFILE CONTAINER -->
-    <div style="max-width:1200px; margin:150px auto 50px; padding:0 20px; display:flex; gap:30px;">
+    <!-- PROFILE -->
+    <div class="modal-content" style="margin:10% auto; max-width:500px;">
+        <h2 style="font-size:48px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px; font-family:'Creepster',cursive;">
+            WANDERER PROFILE
+        </h2>
         
-        <!-- SOL SÜTUN (25% - SIDEBAR) -->
-        <aside style="width:25%; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:20px; height:fit-content;">
-            
-            <!-- PROFİL KARTI -->
-            <div style="text-align:center; padding:20px; border:1px solid var(--koyu-kirmizi); margin-bottom:30px;">
-                <!-- Profil Resmi (Daire) -->
-                <img id="profile-avatar" src="https://placehold.co/100x100/1A1A1A/8B0000?text=?" 
-                     style="width:100px; height:100px; border-radius:50%; border:2px solid var(--koyu-kirmizi); margin-bottom:15px; object-fit:cover;">
-                
-                <!-- Kullanıcı Adı -->
-                <h3 id="profile-username" style="color:#fff; font-family:'Creepster', cursive; font-size:24px; margin:5px 0; text-shadow:0 0 5px #8B0000;">Loading...</h3>
-                
-                <!-- Başlık (!987 gibi) -->
-                <p id="profile-title" style="color:#8B0000; font-family:'Share Tech Mono', monospace; font-size:14px; margin:0;">!000</p>
-            </div>
-            
-            <!-- MENÜ LİSTESİ -->
-            <nav>
-                <ul style="list-style:none; padding:0; margin:0;">
-                    <li style="margin-bottom:10px;">
-                        <button class="menu-item active" onclick="location.href='profile.html'" style="width:100%; text-align:left; padding:10px; background:var(--koyu-siyah); border:1px solid var(--koyu-kirmizi); color:#fff; font-family:'Share Tech Mono', monospace; cursor:pointer;">Account</button>
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <button class="menu-item" style="width:100%; text-align:left; padding:10px; background:var(--koyu-gri); border:1px solid #333; color:#666; font-family:'Share Tech Mono', monospace; cursor:not-allowed;" disabled>Orders</button>
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <button class="menu-item" style="width:100%; text-align:left; padding:10px; background:var(--koyu-gri); border:1px solid #333; color:#666; font-family:'Share Tech Mono', monospace; cursor:not-allowed;" disabled>Addresses</button>
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <button class="menu-item" style="width:100%; text-align:left; padding:10px; background:var(--koyu-gri); border:1px solid #333; color:#666; font-family:'Share Tech Mono', monospace; cursor:not-allowed;" disabled>Wallet</button>
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <button class="menu-item" style="width:100%; text-align:left; padding:10px; background:var(--koyu-gri); border:1px solid #333; color:#666; font-family:'Share Tech Mono', monospace; cursor:not-allowed;" disabled>Wishlist</button>
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <button class="menu-item" style="width:100%; text-align:left; padding:10px; background:var(--koyu-gri); border:1px solid #333; color:#666; font-family:'Share Tech Mono', monospace; cursor:not-allowed;" disabled>Subscriptions</button>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- SAĞ SÜTUN (75% - ANA İÇERİK) -->
-        <main style="width:75%; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
-            
-            <!-- BAŞLIK ve BUTONLAR -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <div>
-                    <h1 style="color:#fff; font-family:'Creepster', cursive; font-size:48px; margin:0; text-shadow:0 0 10px #8B0000;">Account</h1>
-                    <p style="color:#ccc; font-family:'Share Tech Mono', monospace; font-size:14px; margin:5px 0;">View and edit your personal information below.</p>
-                </div>
-                <button id="update-btn" class="glitch-btn" style="font-size:18px; padding:10px 20px;">Update</button>
-            </div>
-            
-            <!-- FORMLAR -->
-            <form id="profile-form">
-                
-                <!-- GÖRÜNEN AD -->
-                <div style="margin-bottom:30px;">
-                    <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:16px; display:block; margin-bottom:10px;">Display Name</label>
-                    <input type="text" id="display-name" placeholder="Your display name" 
-                           style="font-size:18px; width:100%; padding:12px; background:transparent; border:none; border-bottom:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
-                </div>
-                
-                <!-- BAŞLIK (!987 gibi) -->
-                <div style="margin-bottom:30px;">
-                    <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:16px; display:block; margin-bottom:10px;">Title (e.g., !987)</label>
-                    <input type="text" id="profile-title-input" placeholder="Your custom title" 
-                           style="font-size:18px; width:100%; padding:12px; background:transparent; border:none; border-bottom:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
-                </div>
-                
-                <!-- PROFİL RESMİ YÜKLEME -->
-                <div style="margin-bottom:30px;">
-                    <label style="color:#fff; font-family:'Share Tech Mono', monospace; font-size:16px; display:block; margin-bottom:10px;">Profile Picture</label>
-                    <div style="display:flex; align-items:center; gap:20px;">
-                        <img id="avatar-preview" src="https://placehold.co/80x80/1A1A1A/8B0000?text=?" 
-                             style="width:80px; height:80px; border-radius:50%; border:2px solid var(--koyu-kirmizi);">
-                        <input type="file" id="avatar-upload" accept="image/*" 
-                               style="font-family:'Share Tech Mono', monospace; color:#fff;">
-                    </div>
-                </div>
-                
-            </form>
-            
-            <!-- UYARI MESAJI -->
-            <div style="margin-top:40px; padding:15px; background:var(--koyu-siyah); border:1px solid var(--koyu-kirmizi);">
-                <p style="color:#8B0000; font-family:'Share Tech Mono', monospace; font-size:12px; margin:0;">⚠️ This information is visible to all members of the site.</p>
-            </div>
-            
-        </main>
+        <div id="profile-content">
+            <p style="text-align:center; color:#888;">Loading profile...</p>
+        </div>
     </div>
 
-    <!-- SUPABASE CONNECTION -->
-    <script type="module">
-        import { supabase } from './supabase.js';
-
-        // Kullanıcı oturum kontrolü
-        let currentUser = null;
-        let originalData = {};
-
-        async function loadProfile() {
-            const { data: { user } } = await supabase.auth.getUser();
-            
-            if (!user) {
-                alert('Please login first!');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            currentUser = user;
-            
-            // Profil bilgilerini getir
-            const { data: profile, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
-            
-            if (error) {
-                console.error('Profile error:', error);
-                return;
-            }
-            
-            // Form alanlarını doldur
-            document.getElementById('profile-username').textContent = profile.username || 'Unknown';
-            document.getElementById('profile-title').textContent = profile.title || '!000';
-            document.getElementById('profile-title-input').value = profile.title || '';
-            document.getElementById('display-name').value = profile.display_name || '';
-            
-            // Avatar
-            if (profile.avatar_url) {
-                document.getElementById('profile-avatar').src = profile.avatar_url;
-                document.getElementById('avatar-preview').src = profile.avatar_url;
-            }
-            
-            // Orijinal verileri kaydet
-            originalData = {
-                display_name: profile.display_name || '',
-                title: profile.title || '',
-                avatar_url: profile.avatar_url || ''
-            };
+    <script>
+        // Logout
+        async function logout() {
+            await window.supabase.auth.signOut();
+            window.location.href = 'index.html';
         }
-
-        // Sayfa yüklendiğinde profili getir
-        loadProfile();
-
-        // Avatar yükleme
-        document.getElementById('avatar-upload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        
+        window.logout = logout;
+        
+        // Profil yükle
+        async function loadProfile() {
+            const container = document.getElementById('profile-content');
             
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${currentUser.id}.${fileExt}`;
-            const filePath = `avatars/${fileName}`;
-            
-            // Yeni avatarı yükle
-            const { error: uploadError } = await supabase.storage
-                .from('avatars')
-                .upload(filePath, file);
-            
-            if (uploadError) {
-                alert('Upload failed: ' + uploadError.message);
-                return;
+            try {
+                const { data: { user } } = await window.supabase.auth.getUser();
+                
+                if (!user) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const { data: profile, error } = await window.supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+                
+                if (error) {
+                    container.innerHTML = `<p style="color:#8B0000; text-align:center;">Error: ${error.message}</p>`;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <div style="background:#0D0D0D; border:2px solid #8B0000; padding:30px;">
+                        <div style="text-align:center; margin-bottom:30px;">
+                            <div style="width:100px; height:100px; background:#1A1A1A; border:3px solid #8B0000; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; font-size:48px;">
+                                ☠
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom:20px;">
+                            <label style="color:#888; font-size:12px;">WANDERER NAME</label>
+                            <p style="color:#fff; font-size:24px; margin:5px 0; font-family:'Creepster',cursive;">
+                                ${escapeHtml(profile.username)}
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom:20px;">
+                            <label style="color:#888; font-size:12px;">LEVEL</label>
+                            <p style="color:#8B0000; font-size:18px; margin:5px 0;">
+                                ${escapeHtml(profile.denomination || 'Unknown')}
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom:20px;">
+                            <label style="color:#888; font-size:12px;">ENTITY ENCOUNTERED</label>
+                            <p style="color:#fff; font-size:16px; margin:5px 0;">
+                                ${escapeHtml(profile.church || 'None recorded')}
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom:20px;">
+                            <label style="color:#888; font-size:12px;">WANDERER ID</label>
+                            <p style="color:#666; font-size:14px; margin:5px 0;">
+                                ${escapeHtml(profile.title || 'Unknown')}
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom:20px;">
+                            <label style="color:#888; font-size:12px;">JOINED</label>
+                            <p style="color:#666; font-size:14px; margin:5px 0;">
+                                ${new Date(profile.created_at).toLocaleDateString()}
+                            </p>
+                        </div>
+                        
+                        <button onclick="location.href='index.html'" class="glitch-btn" style="width:100%; margin-top:20px;">
+                            RETURN TO THE VOID
+                        </button>
+                    </div>
+                `;
+                
+            } catch (error) {
+                container.innerHTML = `<p style="color:#8B0000; text-align:center;">Error: ${error.message}</p>`;
             }
-            
-            // URL al
-            const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
-            const publicURL = data.publicUrl;
-            
-            // Preview güncelle
-            document.getElementById('profile-avatar').src = publicURL;
-            document.getElementById('avatar-preview').src = publicURL;
-            
-            // Kaydet için hazırla
-            originalData.avatar_url = publicURL;
-        });
-
-        // Güncelle butonu
-        document.getElementById('update-btn').addEventListener('click', async () => {
-            const displayName = document.getElementById('display-name').value;
-            const title = document.getElementById('profile-title-input').value;
-            
-            const { error } = await supabase.from('profiles').update({
-                display_name: displayName,
-                title: title,
-                avatar_url: originalData.avatar_url
-            }).eq('id', currentUser.id);
-            
-            if (error) {
-                alert('Update failed: ' + error.message);
-            } else {
-                alert('Profile updated successfully!');
-                loadProfile(); // Yenile
-            }
-        });
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadProfile);
     </script>
 
 </body>

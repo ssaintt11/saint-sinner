@@ -6,12 +6,15 @@
     <title>Login - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- SUPABASE CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
 </head>
 <body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
     
-    <!-- HEADER (HER SAYFADA AYNI) -->
+    <!-- HEADER -->
     <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+        <div class="logo" style="font-size:48px;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         <div class="top-buttons">
             <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
             <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
@@ -27,60 +30,88 @@
     <!-- LOGIN FORM -->
     <div class="modal-content" style="margin:10% auto; max-width:400px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
         
-        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">ENTER THE CHURCH</h2>
+        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px; font-family:'Creepster',cursive;">
+            ENTER THE VOID
+        </h2>
+        <p style="text-align:center; color:#888; margin-bottom:20px; font-size:14px;">
+            No clipping through reality...
+        </p>
         
         <form id="login-form">
-            <input type="text" id="login-username" placeholder="Username" required 
+            <input type="text" id="login-username" placeholder="Your Wanderer Name" required 
                    style="font-size:18px; width:100%; padding:12px; margin:15px 0; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <input type="password" id="login-password" placeholder="Password" required 
+            <input type="password" id="login-password" placeholder="Access Code" required 
                    style="font-size:18px; width:100%; padding:12px; margin:15px 0; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
             
-            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">LOGIN</button>
+            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">NO CLIP</button>
         </form>
         
         <div id="login-message" style="margin-top:20px; text-align:center; color:#fff; font-family:'Share Tech Mono', monospace;"></div>
         
         <p style="text-align:center; margin-top:20px; color:#fff; font-family:'Share Tech Mono', monospace;">
-            Don't have an account? <a href="register.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Register</a>
+            New wanderer? <a href="register.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Join the Lost</a>
         </p>
     </div>
 
-    <!-- SUPABASE CONNECTION -->
-    <script type="module">
-        import { supabase } from './supabase.js';
-
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('login-form');
             
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            
-            // 1. Username'den email'i bul
-            const { data: userData, error: findError } = await supabase.rpc('login_with_username', {
-                username_input: username,
-                password_input: password
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-password').value;
+                
+                if (!username || !password) {
+                    document.getElementById('login-message').innerHTML = 
+                        `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Enter both fields...</p>`;
+                    return;
+                }
+                
+                try {
+                    // Username'den email oluştur
+                    const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}@saint-sinner.void`;
+                    
+                    // Giriş yap
+                    const { data, error } = await window.supabase.auth.signInWithPassword({
+                        email: fakeEmail,
+                        password: password
+                    });
+                    
+                    if (error) {
+                        // Eğer kullanıcı bulunamazsa, profiles tablosunda ara
+                        const { data: profile } = await window.supabase
+                            .from('profiles')
+                            .select('id')
+                            .eq('username', username)
+                            .single();
+                        
+                        if (!profile) {
+                            document.getElementById('login-message').innerHTML = 
+                                `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Wanderer not found...</p>`;
+                            return;
+                        }
+                        
+                        document.getElementById('login-message').innerHTML = 
+                            `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Wrong access code...</p>`;
+                        return;
+                    }
+                    
+                    document.getElementById('login-message').innerHTML = 
+                        `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Welcome to the Backrooms...</p>`;
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    document.getElementById('login-message').innerHTML = 
+                        `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${error.message}</p>`;
+                }
             });
-            
-            if (findError || userData.error) {
-                document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${findError?.message || userData.message}</p>`;
-                return;
-            }
-            
-            // 2. Email ve şifre ile giriş yap
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: userData.email,
-                password: password
-            });
-            
-            if (error) {
-                document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Login failed: ${error.message}</p>`;
-            } else {
-                document.getElementById('login-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Welcome back, sinner! Redirecting...</p>`;
-                setTimeout(() => {
-                    window.location.href = 'profile.html';
-                }, 1500);
-            }
         });
     </script>
 
