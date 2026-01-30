@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,41 +7,245 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
-<body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
-    
-    <!-- HEADER -->
-    <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
-        <div class="top-buttons">
-            <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
-            <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
-        </div>
-        <div class="main-buttons" style="top:110px;">
-            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
-            <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
-            <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
-            <button class="backrooms-btn" onclick="location.href='forgive.html'">Forgive My Sins</button>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+            <nav class="main-nav" id="main-nav">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="countdown.html" class="nav-link">Countdown</a>
+                <a href="forgive.html" class="nav-link">Confess</a>
+                <a href="admin.html" class="nav-link" id="admin-link" style="display:none;">New Post</a>
+            </nav>
+            <div class="auth-buttons" id="auth-buttons">
+                <button onclick="location.href='login.html'" class="btn-outline">Login</button>
+                <button onclick="location.href='register.html'" class="btn-primary">Register</button>
+            </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main style="max-width:900px; margin:200px auto 50px; padding:20px;">
-        <h2 style="text-align:center; color:#fff; font-size:32px; text-shadow:0 0 5px #8B0000; margin-bottom:50px;">
-            WELCOME TO THE VOID
-        </h2>
-        
-        <div style="background:#1A1A1A; border:2px solid #8B0000; padding:30px; text-align:center;">
-            <p style="color:#fff; font-size:18px; margin-bottom:30px;">
-                This is where the lost souls gather...
-            </p>
-            <button class="glitch-btn" onclick="location.href='login.html'">ENTER THE CHURCH</button>
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 120px;">
+        <div class="timeline-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="profile-card" id="sidebar-profile" style="display:none;">
+                    <img id="sidebar-avatar" src="" alt="Avatar" class="sidebar-avatar">
+                    <h3 id="sidebar-username">Username</h3>
+                    <p id="sidebar-title">!000</p>
+                    <button onclick="location.href='profile.html'" class="btn-outline" style="width:100%; margin-top:15px; font-size:14px;">Edit Profile</button>
+                    <button onclick="logout()" class="btn-danger" style="width:100%; margin-top:10px; font-size:14px;">Logout</button>
+                </div>
+                <div class="guest-card" id="sidebar-guest">
+                    <p style="color:#888; margin-bottom:15px; font-size:14px;">Join the congregation to comment and interact...</p>
+                    <button onclick="location.href='register.html'" class="btn-primary" style="width:100%;">Join Now</button>
+                </div>
+            </aside>
+
+            <!-- Timeline -->
+            <main class="timeline" id="posts-container">
+                <div class="loading-posts">Loading the void...</div>
+            </main>
         </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Posts yükleyici
+        async function loadPosts() {
+            const container = document.getElementById('posts-container');
+            
+            try {
+                const { data: posts, error } = await window.supabase
+                    .from('posts')
+                    .select(`
+                        *,
+                        profiles:user_id (username, avatar_url)
+                    `)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                if (!posts || posts.length === 0) {
+                    container.innerHTML = '<div class="empty-state">The void is empty... Be the first to post.</div>';
+                    return;
+                }
+                
+                container.innerHTML = posts.map(post => `
+                    <article class="post-card" data-post-id="${post.id}">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <img src="${post.profiles?.avatar_url || 'https://placehold.co/40x40/1A1A1A/8B0000?text=?'}" class="post-avatar">
+                                <div class="post-meta">
+                                    <span class="post-username">@${post.profiles?.username || 'unknown'}</span>
+                                    <span class="post-date">${new Date(post.created_at).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>${escapeHtml(post.content)}</p>
+                            ${post.media_url ? renderMedia(post.media_url, post.media_type) : ''}
+                        </div>
+                        
+                        <div class="post-actions">
+                            <button class="like-btn ${post.user_liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                                <span class="like-icon">𖤐</span>
+                                <span class="like-count">${post.likes_count || 0}</span>
+                            </button>
+                            <button class="comment-btn" onclick="toggleComments('${post.id}')">
+                                Comments
+                            </button>
+                        </div>
+                        
+                        <div class="comments-section" id="comments-${post.id}" style="display:none;">
+                            <div class="comments-list" id="comments-list-${post.id}"></div>
+                            <div class="comment-form" id="comment-form-${post.id}" style="display:none;">
+                                <input type="text" placeholder="Write a comment..." id="comment-input-${post.id}" onkeypress="handleCommentKey(event, '${post.id}')">
+                                <button onclick="submitComment('${post.id}')">Send</button>
+                            </div>
+                            <div class="login-to-comment" id="login-to-comment-${post.id}" style="display:none; text-align:center; padding:10px; color:#666; font-size:14px;">
+                                <a href="login.html" style="color:#8B0000;">Login</a> to comment
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+                
+                // Kullanıcı giriş yapmışsa beğeni durumunu check et
+                await checkLikedPosts();
+                await updateAuthUI();
+                
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                container.innerHTML = '<div class="error-msg">Failed to load posts. Refresh the page.</div>';
+            }
+        }
         
-        <div style="margin-top:50px; text-align:center; color:#888;">
-            <p style="font-size:14px;">
-                No clipping detected. Reality is stable... for now.
-            </p>
-        </div>
-    </main>
+        function renderMedia(url, type) {
+            if (type === 'video') {
+                return `<video controls class="post-media"><source src="${url}" type="video/mp4"></video>`;
+            } else if (type === 'image') {
+                return `<img src="${url}" class="post-media" onclick="window.open('${url}', '_blank')">`;
+            }
+            return '';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        async function toggleLike(postId) {
+            const { data: { user } } = await window.supabase.auth.getUser();
+            if (!user) {
+                alert('You must login to like!');
+                return;
+            }
+            
+            const btn = document.querySelector(`[data-post-id="${postId}"] .like-btn`);
+            const isLiked = btn.classList.contains('liked');
+            
+            if (isLiked) {
+                await window.supabase.from('likes').delete().eq('post_id', postId).eq('user_id', user.id);
+                btn.classList.remove('liked');
+                const count = parseInt(btn.querySelector('.like-count').textContent) - 1;
+                btn.querySelector('.like-count').textContent = count;
+            } else {
+                await window.supabase.from('likes').insert({ post_id: postId, user_id: user.id });
+                btn.classList.add('liked');
+                const count = parseInt(btn.querySelector('.like-count').textContent) + 1;
+                btn.querySelector('.like-count').textContent = count;
+            }
+        }
+        
+        async function checkLikedPosts() {
+            const { data: { user } } = await window.supabase.auth.getUser();
+            if (!user) return;
+            
+            const { data: likes } = await window.supabase.from('likes').select('post_id').eq('user_id', user.id);
+            if (likes) {
+                likes.forEach(like => {
+                    const btn = document.querySelector(`[data-post-id="${like.post_id}"] .like-btn`);
+                    if (btn) btn.classList.add('liked');
+                });
+            }
+        }
+        
+        async function toggleComments(postId) {
+            const section = document.getElementById(`comments-${postId}`);
+            const isVisible = section.style.display === 'block';
+            
+            if (!isVisible) {
+                section.style.display = 'block';
+                await loadComments(postId);
+                
+                // Giriş kontrolü
+                const { data: { user } } = await window.supabase.auth.getUser();
+                if (user) {
+                    document.getElementById(`comment-form-${postId}`).style.display = 'flex';
+                    document.getElementById(`login-to-comment-${postId}`).style.display = 'none';
+                } else {
+                    document.getElementById(`comment-form-${postId}`).style.display = 'none';
+                    document.getElementById(`login-to-comment-${postId}`).style.display = 'block';
+                }
+            } else {
+                section.style.display = 'none';
+            }
+        }
+        
+        async function loadComments(postId) {
+            const { data: comments } = await window.supabase
+                .from('comments')
+                .select('*, profiles:user_id(username)')
+                .eq('post_id', postId)
+                .order('created_at', { ascending: true });
+            
+            const container = document.getElementById(`comments-list-${postId}`);
+            if (!comments || comments.length === 0) {
+                container.innerHTML = '<div style="color:#666; font-size:14px; padding:10px;">No comments yet...</div>';
+                return;
+            }
+            
+            container.innerHTML = comments.map(c => `
+                <div class="comment">
+                    <span class="comment-author">@${c.profiles?.username || 'unknown'}</span>
+                    <span class="comment-text">${escapeHtml(c.content)}</span>
+                    <span class="comment-date">${new Date(c.created_at).toLocaleDateString()}</span>
+                </div>
+            `).join('');
+        }
+        
+        function handleCommentKey(e, postId) {
+            if (e.key === 'Enter') submitComment(postId);
+        }
+        
+        async function submitComment(postId) {
+            const input = document.getElementById(`comment-input-${postId}`);
+            const content = input.value.trim();
+            if (!content) return;
+            
+            const { data: { user } } = await window.supabase.auth.getUser();
+            if (!user) return;
+            
+            const { error } = await window.supabase.from('comments').insert({
+                post_id: postId,
+                user_id: user.id,
+                content: content
+            });
+            
+            if (!error) {
+                input.value = '';
+                await loadComments(postId);
+            }
+        }
+        
+        // Sayfa yüklendiğinde
+        window.addEventListener('DOMContentLoaded', loadPosts);
+    </script>
 </body>
 </html>

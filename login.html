@@ -1,87 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Saint 𖤐 sinneR</title>
+    <title>Register - Saint 𖤐 sinneR</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
-<body style="background:#000 url('ravenn.png') center/cover no-repeat fixed; min-height:100vh;">
-    
-    <!-- HEADER -->
-    <header class="fixed-header" style="padding:60px 0;">
-        <div class="logo" style="font-size:48px; cursor:pointer;" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
-        <div class="top-buttons">
-            <button class="backrooms-btn" onclick="location.href='login.html'">Login</button>
-            <button class="backrooms-btn" onclick="location.href='register.html'">Register</button>
-        </div>
-        <div class="main-buttons" style="top:110px;">
-            <button class="backrooms-btn" onclick="location.href='index.html'">Main Page</button>
-            <button class="backrooms-btn" onclick="location.href='countdown.html'">Countdown</button>
-            <button class="backrooms-btn" onclick="alert('Blog coming soon')">Blog</button>
-            <button class="backrooms-btn" onclick="location.href='forgive.html'">Forgive My Sins</button>
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
         </div>
     </header>
 
-    <!-- LOGIN FORM -->
-    <div class="modal-content" style="margin:10% auto; max-width:400px; background:var(--koyu-gri); border:2px solid var(--koyu-kirmizi); padding:30px;">
-        
-        <h2 style="font-size:36px; color:#fff; text-shadow:0 0 10px #8B0000; text-align:center; margin-bottom:30px;">ENTER THE CHURCH</h2>
-        
-        <form id="login-form">
-            <input type="text" id="login-username" placeholder="Username" required 
-                   style="font-size:18px; width:100%; padding:12px; margin:15px 0; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
+    <div class="auth-container">
+        <div class="auth-card" style="max-width:500px;">
+            <h1 class="auth-title">JOIN THE CONGREGATION</h1>
+            <p class="auth-subtitle">Confess your sins to enter...</p>
             
-            <input type="password" id="login-password" placeholder="Password" required 
-                   style="font-size:18px; width:100%; padding:12px; margin:15px 0; background:var(--koyu-gri); border:1px solid var(--koyu-kirmizi); color:var(--beyaz); font-family:'Share Tech Mono', monospace;">
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label>Username *</label>
+                    <input type="text" id="username" required placeholder="Choose a unique username">
+                </div>
+                
+                <div class="form-group">
+                    <label>Denomination *</label>
+                    <input type="text" id="denomination" required placeholder="Catholic, Orthodox, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label>Church (Optional)</label>
+                    <input type="text" id="church" placeholder="Your local church">
+                </div>
+                
+                <div class="form-group">
+                    <label>Password * (min 6 chars)</label>
+                    <input type="password" id="password" required minlength="6" placeholder="Create a password">
+                </div>
+                
+                <button type="submit" class="btn-glitch" style="width:100%; margin-top:20px; padding:15px; font-size:24px;">
+                    REGISTER
+                </button>
+            </form>
             
-            <button type="submit" class="glitch-btn" style="width:100%; font-size:24px; margin-top:20px;">LOGIN</button>
-        </form>
-        
-        <div id="login-message" style="margin-top:20px; text-align:center; color:#fff; font-family:'Share Tech Mono', monospace;"></div>
-        
-        <p style="text-align:center; margin-top:20px; color:#fff; font-family:'Share Tech Mono', monospace;">
-            Don't have an account? <a href="register.html" style="color:#8B0000; text-shadow:0 0 5px #8B0000;">Register</a>
-        </p>
+            <div id="message" class="auth-message"></div>
+            
+            <p style="text-align:center; margin-top:20px; color:#888; font-size:14px;">
+                Already a member? <a href="login.html" style="color:#8B0000; font-weight:bold;">Login here</a>
+            </p>
+        </div>
     </div>
 
-    <!-- SUPABASE CONNECTION -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('login-form');
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('message');
+            msg.innerHTML = 'Creating your account...';
             
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('login-username').value;
-                const password = document.getElementById('login-password').value;
-                
-                // Fake email oluştur
-                const fakeEmail = `${username.toLowerCase().replace(/\s/g, '_')}@saint-sinner-fake.com`;
-                
-                try {
-                    const { data, error } = await window.supabase.auth.signInWithPassword({
-                        email: fakeEmail,
-                        password: password
-                    });
-                    
-                    if (error) {
-                        document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Login failed: ${error.message}</p>`;
-                        return;
+            const username = document.getElementById('username').value.trim();
+            const denomination = document.getElementById('denomination').value.trim();
+            const church = document.getElementById('church').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Basit validasyon
+            if (username.length < 3) {
+                msg.innerHTML = '<span class="error-text">Username must be at least 3 characters</span>';
+                return;
+            }
+            
+            // Email formatı oluştur (unique olmalı)
+            const email = `${username.toLowerCase()}@saint-sinner.internal`;
+            
+            try {
+                // 1. Auth kaydı
+                const { data: authData, error: authError } = await window.supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: { username: username }
                     }
-                    
-                    document.getElementById('login-message').innerHTML = `<p style="color: #00FF00; text-shadow:0 0 5px #00FF00;">Welcome back, sinner! Redirecting...</p>`;
-                    setTimeout(() => {
-                        window.location.href = 'profile.html';
-                    }, 1500);
-                    
-                } catch (error) {
-                    document.getElementById('login-message').innerHTML = `<p style="color: #8B0000; text-shadow:0 0 5px #8B0000;">Error: ${error.message}</p>`;
+                });
+                
+                if (authError) {
+                    if (authError.message.includes('already')) {
+                        msg.innerHTML = '<span class="error-text">This username is already taken</span>';
+                    } else {
+                        msg.innerHTML = `<span class="error-text">${authError.message}</span>`;
+                    }
+                    return;
                 }
-            });
+                
+                if (!authData.user) {
+                    msg.innerHTML = '<span class="error-text">Registration failed. Try again.</span>';
+                    return;
+                }
+                
+                // 2. Profil tablosuna ekle
+                const { error: profileError } = await window.supabase.from('profiles').insert({
+                    id: authData.user.id,
+                    username: username,
+                    denomination: denomination,
+                    church: church || null,
+                    title: `!${Math.floor(Math.random() * 900000) + 100000}`
+                });
+                
+                if (profileError) {
+                    // Profil hatası durumunda auth'u silmeye çalış (temizlik için)
+                    await window.supabase.auth.signOut();
+                    msg.innerHTML = `<span class="error-text">Profile creation failed: ${profileError.message}</span>`;
+                    return;
+                }
+                
+                msg.innerHTML = '<span class="success-text">Account created! Redirecting to the void...</span>';
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+                
+            } catch (err) {
+                msg.innerHTML = `<span class="error-text">System error: ${err.message}</span>`;
+            }
         });
     </script>
-
 </body>
 </html>

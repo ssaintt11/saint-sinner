@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Post - Saint 𖤐 sinneR</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo" onclick="location.href='index.html'">Saint 𖤐 sinneR</div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="admin.html" class="nav-link active">New Post</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 140px; max-width: 800px;">
+        <div class="auth-card">
+            <h1 class="auth-title">SPREAD THE WORD</h1>
+            <p class="auth-subtitle">Share your thoughts with the congregation...</p>
+            
+            <form id="post-form" class="auth-form">
+                <div class="form-group">
+                    <label>Content *</label>
+                    <textarea id="content" rows="6" required placeholder="Write your message here..." style="resize:vertical; min-height:120px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Media (Image or Video - Optional)</label>
+                    <input type="file" id="media" accept="image/*,video/*" style="background:transparent; padding:10px 0;">
+                    <small style="color:#666;">Max file size: 50MB</small>
+                </div>
+                
+                <button type="submit" class="btn-glitch" style="width:100%; margin-top:20px; padding:15px; font-size:24px;">
+                    PUBLISH
+                </button>
+            </form>
+            
+            <div id="message" class="auth-message"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        let currentUser = null;
+        
+        // Sadece giriş yapmış kullanıcılar görebilir
+        window.supabase.auth.getUser().then(({ data: { user } }) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = user;
+        });
+        
+        document.getElementById('post-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('message');
+            msg.innerHTML = 'Publishing...';
+            
+            const content = document.getElementById('content').value.trim();
+            const fileInput = document.getElementById('media');
+            const file = fileInput.files[0];
+            
+            if (!content) {
+                msg.innerHTML = '<span class="error-text">Content is required!</span>';
+                return;
+            }
+            
+            try {
+                let mediaUrl = null;
+                let mediaType = 'text';
+                
+                // Dosya yükleme
+                if (file) {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${currentUser.id}-${Date.now()}.${fileExt}`;
+                    const bucket = file.type.startsWith('video/') ? 'posts' : 'posts';
+                    
+                    const { error: uploadError } = await window.supabase.storage
+                        .from(bucket)
+                        .upload(fileName, file);
+                    
+                    if (uploadError) throw uploadError;
+                    
+                    const { data } = window.supabase.storage.from(bucket).getPublicUrl(fileName);
+                    mediaUrl = data.publicUrl;
+                    mediaType = file.type.startsWith('video/') ? 'video' : 'image';
+                }
+                
+                // Post oluştur
+                const { error: postError } = await window.supabase.from('posts').insert({
+                    user_id: currentUser.id,
+                    content: content,
+                    media_url: mediaUrl,
+                    media_type: mediaType
+                });
+                
+                if (postError) throw postError;
+                
+                msg.innerHTML = '<span class="success-text">Published! Redirecting...</span>';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+            } catch (err) {
+                msg.innerHTML = `<span class="error-text">Error: ${err.message}</span>`;
+            }
+        });
+    </script>
+</body>
+</html>
